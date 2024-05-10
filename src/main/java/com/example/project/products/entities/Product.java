@@ -30,6 +30,6 @@ public class Product {
     @Column
     private String desc;
 
-    @OneToMany(mappedBy = "product_id")
+    @OneToMany(mappedBy = "product")
     private List<ProductCategory> categories;
 }   
