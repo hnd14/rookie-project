@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
@@ -20,6 +21,7 @@ import com.example.project.products.services.ProductServiceStore;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 
+@Service
 public class ProductServiceStoreImpl implements ProductServiceStore{
     private ProductRepository repo;
     private ProductMapper mapper;
@@ -49,5 +51,5 @@ public class ProductServiceStoreImpl implements ProductServiceStore{
         return repo.findAll(specification).stream().map(mapper::toCustomerDto).collect(Collectors.toList());
     }
 
-    
+
 }
