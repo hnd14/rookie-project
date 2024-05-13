@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Responses.CategoryDto;
@@ -13,6 +14,7 @@ import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceBackStore;
 
+@Service
 public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     @Autowired
     private CategoryRepository repo;
