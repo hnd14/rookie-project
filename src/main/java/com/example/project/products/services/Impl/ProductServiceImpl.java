@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.entities.Product;
@@ -12,6 +13,7 @@ import com.example.project.products.mapper.ProductMapper;
 import com.example.project.products.repositories.ProductRepository;
 import com.example.project.products.services.ProductService;
 
+@Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
     ProductRepository repo;

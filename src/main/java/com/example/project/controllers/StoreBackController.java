@@ -26,7 +26,6 @@ public class StoreBackController {
 
     @PostMapping("/products")
     public ProductSellerDto createNewProduct(@RequestBody PostNewProductDto dto){
-        System.out.println(dto.salePrice());
         return productService.createNewProduct(dto);
     }
 
