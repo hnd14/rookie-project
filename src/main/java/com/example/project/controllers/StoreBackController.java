@@ -39,6 +39,6 @@ public class StoreBackController {
     @GetMapping("/products")
     @ResponseBody
     public List<ProductSellerDto> getProducts(ProductSearchDto dto){
-        return productService.findProductWithFilter(dto==null?null:dto);
+        return productService.findProductWithFilter(dto);
     }
 }
