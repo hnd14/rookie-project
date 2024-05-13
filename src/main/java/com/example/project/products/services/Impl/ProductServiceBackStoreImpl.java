@@ -14,6 +14,7 @@ import com.example.project.products.entities.Product;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.mapper.ProductMapper;
 import com.example.project.products.repositories.ProductRepository;
+import com.example.project.products.services.ProductService;
 import com.example.project.products.services.ProductServiceBackStore;
 
 @Service
@@ -22,6 +23,8 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     ProductRepository repo;
     @Autowired
     ProductMapper mapper;
+    @Autowired
+    ProductService productService;
     
     @Override
     public ProductSellerDto createNewProduct(PostNewProductDto dto) {
@@ -35,17 +38,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     }
     @Override
     public List<ProductSellerDto> findProductWithFilter(ProductSearchDto dto) {
-        String productName = dto.name() == null?"":dto.name();
-        // List<Long> productCategories = List.of(dto.categoriesId());
-        Double minPrice = dto.minPrice();
-        Double maxPrice = dto.maxPrice();
-        Specification<Product> specification = (root, query, cb) ->{
-            var namePredicate = cb.like(root.get("name"), "%"+productName+"%");
-            var minPricePredicate = minPrice == null?cb.conjunction():cb.greaterThan(root.get("salePrice"), minPrice);
-            var maxPricePredicate = maxPrice == null?cb.conjunction():cb.lessThan(root.get("salePrice"), maxPrice);
-            return cb.and(namePredicate, maxPricePredicate, minPricePredicate);
-        };
-        return repo.findAll(specification).stream().map(mapper::toStaffDto).collect(Collectors.toList());
+        return productService.findProductWithFilter(dto).stream().map(mapper::toStaffDto).collect(Collectors.toList());
     }
 
 }
