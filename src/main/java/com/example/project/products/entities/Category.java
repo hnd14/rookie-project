@@ -1,5 +1,6 @@
 package com.example.project.products.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -26,5 +27,5 @@ public class Category {
     private String desc;
 
     @OneToMany(mappedBy = "category")
-    private List<ProductCategory> productsInCategory;
+    private List<ProductCategory> productsInCategory = new ArrayList<>();
 }
