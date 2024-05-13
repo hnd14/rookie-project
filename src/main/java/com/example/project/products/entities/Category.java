@@ -22,6 +22,9 @@ public class Category {
     @Column
     private String name;
 
+    @Column
+    private String desc;
+
     @OneToMany(mappedBy = "category")
     private List<ProductCategory> productsInCategory;
 }

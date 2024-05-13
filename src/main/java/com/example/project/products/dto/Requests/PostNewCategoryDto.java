@@ -1,5 +1,5 @@
 package com.example.project.products.dto.Requests;
 
-public record PostNewCategoryDto(String name) {
+public record PostNewCategoryDto(String name, String desc) {
 
 }
