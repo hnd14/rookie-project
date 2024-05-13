@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
@@ -16,6 +17,7 @@ import com.example.project.products.services.ProductService;
 import com.example.project.products.services.ProductServiceStore;
 
 @Service
+@Transactional(readOnly = true)
 public class ProductServiceStoreImpl implements ProductServiceStore{
     @Autowired
     private ProductRepository repo;

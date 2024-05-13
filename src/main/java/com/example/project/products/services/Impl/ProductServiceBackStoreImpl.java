@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
@@ -16,7 +17,9 @@ import com.example.project.products.repositories.ProductRepository;
 import com.example.project.products.services.ProductService;
 import com.example.project.products.services.ProductServiceBackStore;
 
+
 @Service
+@Transactional(readOnly = true)
 public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     @Autowired
     ProductRepository repo;
@@ -26,6 +29,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     ProductService productService;
     
     @Override
+    @Transactional
     public ProductSellerDto createNewProduct(PostNewProductDto dto) {
         Product newProduct = mapper.toNewProduct(dto);
         repo.save(newProduct);
