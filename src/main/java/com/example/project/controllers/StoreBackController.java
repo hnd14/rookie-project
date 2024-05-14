@@ -58,7 +58,7 @@ public class StoreBackController {
         return categoryService.findCategoryByName(name);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("/products/{id}")
     public ProductAdminDto updateProduct(@PathVariable Long id, @RequestBody UpdateProductDto dto){
         return productService.updateProduct(id, dto);
     }

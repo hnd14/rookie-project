@@ -42,8 +42,8 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     @Transactional
     public ProductAdminDto createNewProduct(PostNewProductDto dto) {
         Product newProduct = mapper.toNewProduct(dto);
-        addCategoriesToProduct(newProduct, dto.categoriesId());
         repo.save(newProduct);
+        addCategoriesToProduct(newProduct, dto.categoriesId());
         return mapper.toStaffDto(newProduct);
     }
     @Override
@@ -68,6 +68,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
 
     @Transactional
     private void addCategoriesToProduct(Product product, List<Long> categoriesId){
+        if (categoriesId == null) return;
         categoriesId.stream().forEach(id -> {
             Category category = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
             ProductCategory productCategory = new ProductCategory(null,product, category);
