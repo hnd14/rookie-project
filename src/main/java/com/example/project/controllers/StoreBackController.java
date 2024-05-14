@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
+import com.example.project.products.dto.Requests.UpdateProductDto;
 import com.example.project.products.dto.Responses.CategoryDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.services.CategoryServiceBackStore;
@@ -54,5 +56,10 @@ public class StoreBackController {
     @GetMapping("/categories")
     public List<CategoryDto> findCategoriesWithPartialName(@RequestParam(value = "name", required = false, defaultValue = "") String name){
         return categoryService.findCategoryByName(name);
+    }
+
+    @PutMapping("/product/{id}")
+    public ProductAdminDto updateProduct(@PathVariable Long id, @RequestBody UpdateProductDto dto){
+        return productService.updateProduct(id, dto);
     }
 }
