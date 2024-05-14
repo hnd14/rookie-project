@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
-import com.example.project.products.dto.Responses.ProductSellerDto;
+import com.example.project.products.dto.Responses.ProductAdminDto;
 
 @Service
 public interface ProductServiceBackStore {
-    ProductSellerDto createNewProduct(PostNewProductDto dto);
-    ProductSellerDto getProductById(Long id);
-    List<ProductSellerDto> findProductWithFilter(ProductSearchDto dto);
+    ProductAdminDto createNewProduct(PostNewProductDto dto);
+    ProductAdminDto getProductById(Long id);
+    List<ProductAdminDto> findProductWithFilter(ProductSearchDto dto);
 }
 

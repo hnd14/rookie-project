@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
-import com.example.project.products.dto.Responses.ProductSellerDto;
+import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.entities.Product;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.mapper.ProductMapper;
@@ -30,17 +30,17 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     
     @Override
     @Transactional
-    public ProductSellerDto createNewProduct(PostNewProductDto dto) {
+    public ProductAdminDto createNewProduct(PostNewProductDto dto) {
         Product newProduct = mapper.toNewProduct(dto);
         repo.save(newProduct);
         return mapper.toStaffDto(newProduct);
     }
     @Override
-    public ProductSellerDto getProductById(Long id) {
+    public ProductAdminDto getProductById(Long id) {
         return repo.findById(id).map(mapper::toStaffDto).orElseThrow(ProductNotFoundException::new);
     }
     @Override
-    public List<ProductSellerDto> findProductWithFilter(ProductSearchDto dto) {
+    public List<ProductAdminDto> findProductWithFilter(ProductSearchDto dto) {
         return productService.findProductWithFilter(dto).stream().map(mapper::toStaffDto).collect(Collectors.toList());
     }
 
