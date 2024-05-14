@@ -44,7 +44,9 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     public List<ProductAdminDto> findProductWithFilter(ProductSearchDto dto) {
         return productService.findProductWithFilter(dto).stream().map(mapper::toStaffDto).collect(Collectors.toList());
     }
+
     @Override
+    @Transactional
     public ProductAdminDto updateProduct(Long id, UpdateProductDto dto) {
         Product productToUpdate = repo.findById(id).orElseThrow(ProductNotFoundException::new);
         productToUpdate.setDesc(dto.desc() == null?productToUpdate.getDesc():dto.desc());
