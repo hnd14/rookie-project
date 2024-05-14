@@ -39,6 +39,9 @@ public class Product {
     @Column
     private Double salePrice;
 
+    @Column
+    private Boolean isFeatured;
+
     @OneToMany(mappedBy = "product")
     private List<ProductCategory> categories = new ArrayList<>();
 }   

@@ -62,6 +62,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         productToUpdate.setDesc(dto.desc() == null?productToUpdate.getDesc():dto.desc());
         productToUpdate.setSalePrice(dto.salePrice() == null?productToUpdate.getSalePrice():dto.salePrice());
         productToUpdate.setStock(dto.stock() == null?productToUpdate.getStock():dto.stock());
+        productToUpdate.setIsFeatured(dto.isFeatured() == null?productToUpdate.isFeatured():dto.isFeatured());
         addCategoriesToProduct(productToUpdate, dto.categoriesId());
         return mapper.toStaffDto(productToUpdate);
     }
