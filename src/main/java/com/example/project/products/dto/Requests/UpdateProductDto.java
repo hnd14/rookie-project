@@ -1,5 +1,7 @@
 package com.example.project.products.dto.Requests;
 
-public record UpdateProductDto(String desc, Long stock, Double salePrice) {
+import java.util.List;
+
+public record UpdateProductDto(String desc, Long stock, Double salePrice, List<Long> categoriesId) {
 
 }
