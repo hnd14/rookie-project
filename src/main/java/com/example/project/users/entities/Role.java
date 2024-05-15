@@ -1,4 +1,4 @@
-package com.example.project.User.entities;
+package com.example.project.users.entities;
 
 import java.util.Set;
 
