@@ -15,10 +15,18 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users")
 @SecondaryTable(name = "user_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "users_id"))
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
