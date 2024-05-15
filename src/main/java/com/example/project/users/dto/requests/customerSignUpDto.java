@@ -1,4 +1,4 @@
-package com.example.project.users.dto;
+package com.example.project.users.dto.requests;
 
 import com.example.project.users.entities.UserDetails;
 
