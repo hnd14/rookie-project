@@ -25,10 +25,10 @@ public class User {
     @Id
     private Long id;
 
-    @Column
+    @Column(unique = true, length = 100)
     private String username;
     
-    @Column
+    @Column(length = 2500)
     private String password;
 
     @Embedded
