@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-@SecondaryTable(name = "users_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "users_id"))
+@SecondaryTable(name = "user_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "users_id"))
 public class User {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
