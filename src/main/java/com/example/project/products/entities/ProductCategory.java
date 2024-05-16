@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,14 @@ public class ProductCategory {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumns({
+        @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id"),
+        @JoinColumn(name = "category_name", referencedColumnName = "name")
+    })
     private Category category;
 
 }
