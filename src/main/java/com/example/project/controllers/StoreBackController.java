@@ -2,6 +2,7 @@ package com.example.project.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
@@ -33,6 +35,7 @@ public class StoreBackController {
     private final CategoryServiceBackStore categoryService;
 
     @PostMapping("/products")
+    @ResponseStatus(HttpStatus.CREATED)
     public ProductAdminDto createNewProduct(@RequestBody PostNewProductDto dto){
         return productService.createNewProduct(dto);
     }
@@ -49,6 +52,7 @@ public class StoreBackController {
     }
 
     @PostMapping("/categories")
+    @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto createNewCategory(@RequestBody PostNewCategoryDto dto){
         return categoryService.createNew(dto);
     }
