@@ -33,6 +33,9 @@ public class Rating {
     @NotBlank
     String content;
 
+    @Column
+    Integer scores;
+
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id"),
