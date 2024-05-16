@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Responses.CategoryDto;
@@ -14,7 +15,10 @@ import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceBackStore;
 
+
+
 @Service
+@Transactional(readOnly = true)
 public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     @Autowired
     private CategoryRepository repo;
@@ -34,6 +38,7 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     }
 
     @Override
+    @Transactional
     public CategoryDto createNew(PostNewCategoryDto dto) {
         Category newCategory = mapper.toNewCategory(dto);
         repo.save(newCategory);
