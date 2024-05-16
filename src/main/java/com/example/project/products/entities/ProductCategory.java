@@ -1,5 +1,6 @@
 package com.example.project.products.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +34,7 @@ public class ProductCategory {
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id"),
-        @JoinColumn(name = "category_name", referencedColumnName = "name")
+        @JoinColumn(name = "category_name", nullable = false, referencedColumnName = "name")
     })
     private Category category;
 
