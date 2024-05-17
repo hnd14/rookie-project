@@ -15,6 +15,8 @@ import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceBackStore;
 
+import jakarta.validation.Valid;
+
 
 
 @Service
@@ -39,7 +41,7 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
 
     @Override
     @Transactional
-    public CategoryDto createNew(PostNewCategoryDto dto) {
+    public CategoryDto createNew(@Valid PostNewCategoryDto dto) {
         Category newCategory = mapper.toNewCategory(dto);
         repo.save(newCategory);
         return mapper.toDto(newCategory);

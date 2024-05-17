@@ -1,5 +1,7 @@
 package com.example.project.products.dto.Requests;
 
-public record PostNewCategoryDto(String name, String desc) {
+import jakarta.validation.constraints.NotBlank;
+
+public record PostNewCategoryDto(@NotBlank String name, String desc) {
 
 }

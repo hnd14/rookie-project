@@ -23,6 +23,7 @@ import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.services.CategoryServiceBackStore;
 import com.example.project.products.services.ProductServiceBackStore;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -53,7 +54,7 @@ public class StoreBackController {
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto createNewCategory(@RequestBody PostNewCategoryDto dto){
+    public CategoryDto createNewCategory(@Valid @RequestBody PostNewCategoryDto dto){
         return categoryService.createNew(dto);
     }
 
