@@ -33,8 +33,11 @@ public class User {
     @Id
     private Long id;
 
-    @Column(unique = true, length = 100)
+    @Column(unique = true, nullable = false, length = 100)
     private String username;
+
+    @Column(unique = true, length = 100)
+    private String email;
     
     @Column(length = 2500)
     private String password;
