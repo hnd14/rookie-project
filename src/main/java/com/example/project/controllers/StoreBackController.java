@@ -23,6 +23,9 @@ import com.example.project.products.dto.Responses.CategoryDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.services.CategoryServiceBackStore;
 import com.example.project.products.services.ProductServiceBackStore;
+import com.example.project.users.dto.requests.CreateNewAdminDto;
+import com.example.project.users.dto.responses.UserReturnDto;
+import com.example.project.users.services.UserService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -35,6 +38,8 @@ public class StoreBackController {
     private final ProductServiceBackStore productService; 
     @Autowired
     private final CategoryServiceBackStore categoryService;
+    @Autowired
+    private final UserService userService;
 
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
@@ -79,5 +84,22 @@ public class StoreBackController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Long id){
         productService.deleteProduct(id);
+    }
+
+    @PostMapping("/admins")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserReturnDto createAdmin(@RequestBody CreateNewAdminDto dto){
+        return userService.createNewAdminUser(dto);
+    }
+
+    @GetMapping("/users/{id}")
+    public UserReturnDto getUserById (@PathVariable Long id){
+        return userService.getUserById(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
     }
 }
