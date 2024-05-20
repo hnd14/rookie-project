@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
         return new UserReturnDto(res.getUsername(), res.getEmail());
     }
 
+    @Transactional
     public UserReturnDto updateUserInfo(Long id,UpdateUserInfoDto dto){
         User userToUpdate = repository.findById(id).orElseThrow(NotFoundException::new);
         userToUpdate.setPassword(passwordEncoder.encode(dto.rawPassword()));
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
         return new UserReturnDto(userToUpdate.getUsername(), userToUpdate.getEmail());
     }
 
+    @Transactional
     public void deleteUser(Long id){
         repository.deleteById(id);
     }
