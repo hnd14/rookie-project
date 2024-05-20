@@ -19,12 +19,13 @@ import com.example.project.util.entities.PasswordEncoder;
 
 @Service
 @Transactional(readOnly=true)
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService  {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository repository;
 
+    @Override
     @Transactional
     public UserReturnDto createNewAdminUser(CreateNewAdminDto dto){
         User newAdmin = new User();
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
         return new UserReturnDto(newAdmin.getUsername(), newAdmin.getEmail());
     }
 
+    @Override
     @Transactional
     public UserReturnDto signUp(CustomerSignUpDto dto){
         User newUser = new User();
@@ -45,11 +47,13 @@ public class UserServiceImpl implements UserService {
         return new UserReturnDto(newUser.getUsername(), newUser.getEmail());
     }
 
+    @Override
     public UserReturnDto getUserById(Long id){
         User res = repository.findById(id).orElseThrow(NotFoundException::new);
         return new UserReturnDto(res.getUsername(), res.getEmail());
     }
 
+    @Override
     @Transactional
     public UserReturnDto updateUserInfo(Long id,UpdateUserInfoDto dto){
         User userToUpdate = repository.findById(id).orElseThrow(NotFoundException::new);
@@ -59,6 +63,7 @@ public class UserServiceImpl implements UserService {
         return new UserReturnDto(userToUpdate.getUsername(), userToUpdate.getEmail());
     }
 
+    @Override
     @Transactional
     public void deleteUser(Long id){
         repository.deleteById(id);
