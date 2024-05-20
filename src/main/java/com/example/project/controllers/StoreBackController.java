@@ -3,6 +3,7 @@ package com.example.project.controllers;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,17 @@ public class StoreBackController {
         return productService.findProductWithFilter(dto);
     }
 
+    @PutMapping("/products/{id}")
+    public ProductAdminDto updateProduct(@PathVariable Long id, @RequestBody UpdateProductDto dto){
+        return productService.updateProduct(id, dto);
+    }
+
+    @DeleteMapping("/products/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
+    }
+
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto createNewCategory(@Valid @RequestBody PostNewCategoryDto dto){
@@ -63,8 +75,9 @@ public class StoreBackController {
         return categoryService.findCategoryByName(name);
     }
 
-    @PutMapping("/products/{id}")
-    public ProductAdminDto updateProduct(@PathVariable Long id, @RequestBody UpdateProductDto dto){
-        return productService.updateProduct(id, dto);
+    @DeleteMapping("/categories/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategory(@PathVariable Long id){
+        productService.deleteProduct(id);
     }
 }
