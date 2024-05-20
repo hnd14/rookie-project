@@ -77,4 +77,9 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         });
     }
 
+    @Transactional
+    public void deleteProduct(Long id){
+        repo.deleteById(id);
+    }
+
 }

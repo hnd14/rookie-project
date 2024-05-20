@@ -47,4 +47,8 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
         return mapper.toDto(newCategory);
     }
 
+    @Transactional
+    public void deleteCategory(Long id){
+        repo.deleteById(id);
+    }
 }

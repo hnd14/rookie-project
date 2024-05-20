@@ -12,4 +12,5 @@ public interface CategoryServiceBackStore {
     CategoryDto findCategoryById(Long id);
     List<CategoryDto> findCategoryByName(String name);
     CategoryDto createNew(PostNewCategoryDto dto);
+    void deleteCategory(Long id);
 }

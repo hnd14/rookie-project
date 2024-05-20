@@ -15,5 +15,6 @@ public interface ProductServiceBackStore {
     ProductAdminDto getProductById(Long id);
     ProductAdminDto updateProduct(Long id, UpdateProductDto dto);
     List<ProductAdminDto> findProductWithFilter(ProductSearchDto dto);
+    void deleteProduct(Long id);
 }
 
