@@ -1,12 +1,14 @@
 package com.example.project.users.services;
 
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 
-public interface UserService {
+public interface UserService extends UserDetailsService{
 
     UserReturnDto createNewAdminUser(CreateNewAdminDto dto);
 

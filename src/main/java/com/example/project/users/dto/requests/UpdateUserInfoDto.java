@@ -1,7 +1,7 @@
 package com.example.project.users.dto.requests;
 
-import com.example.project.users.entities.UserDetails;
+import com.example.project.users.entities.UserInfos;
 
-public record UpdateUserInfoDto(String rawPassword, UserDetails details) {
+public record UpdateUserInfoDto(String rawPassword, UserInfos details) {
 
 }

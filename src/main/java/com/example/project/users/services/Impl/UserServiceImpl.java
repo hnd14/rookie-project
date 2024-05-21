@@ -2,6 +2,9 @@ package com.example.project.users.services.Impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +16,9 @@ import com.example.project.users.entities.User;
 import com.example.project.users.repositories.UserRepository;
 import com.example.project.users.services.UserService;
 import com.example.project.util.entities.NotFoundException;
-import com.example.project.util.entities.PasswordEncoder;
+
+
+import jakarta.validation.ValidationException;
 
 
 
@@ -39,6 +44,12 @@ public class UserServiceImpl implements UserService  {
     @Override
     @Transactional
     public UserReturnDto signUp(CustomerSignUpDto dto){
+        if (repository.findOneByUserName(dto.username()).isPresent()){
+            throw new ValidationException("Username is already used");
+        }
+        if (repository.findOneByEmail(dto.email()).isPresent()){
+            throw new ValidationException("Email is already used");
+        }
         User newUser = new User();
         newUser.setUsername(dto.username());
         newUser.setEmail(dto.email());
@@ -58,7 +69,7 @@ public class UserServiceImpl implements UserService  {
     public UserReturnDto updateUserInfo(Long id,UpdateUserInfoDto dto){
         User userToUpdate = repository.findById(id).orElseThrow(NotFoundException::new);
         userToUpdate.setPassword(passwordEncoder.encode(dto.rawPassword()));
-        userToUpdate.setUserDetails(dto.details());
+        userToUpdate.setUserInfos(dto.details());
         repository.save(userToUpdate);
         return new UserReturnDto(userToUpdate.getUsername(), userToUpdate.getEmail());
     }
@@ -67,6 +78,11 @@ public class UserServiceImpl implements UserService  {
     @Transactional
     public void deleteUser(Long id){
         repository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findUserByUserName(username).orElseThrow(NotFoundException::new);
     }
     
 }
