@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService  {
     @Override
     @Transactional
     public UserReturnDto signUp(CustomerSignUpDto dto){
-        if (repository.findOneByUserName(dto.username()).isPresent()){
+        if (repository.findOneByUsername(dto.username()).isPresent()){
             throw new ValidationException("Username is already used");
         }
         if (repository.findOneByEmail(dto.email()).isPresent()){
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findUserByUserName(username).orElseThrow(NotFoundException::new);
+        return repository.findUserByUsername(username).orElseThrow(NotFoundException::new);
     }
     
 }
