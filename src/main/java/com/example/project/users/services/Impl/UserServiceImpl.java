@@ -2,6 +2,7 @@ package com.example.project.users.services.Impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService  {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository repository;
+    @Lazy
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
