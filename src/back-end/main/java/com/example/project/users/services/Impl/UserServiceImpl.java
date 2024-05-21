@@ -2,20 +2,15 @@ package com.example.project.users.services.Impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.project.jwt.TokenProvider;
 import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
-import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
-import com.example.project.users.dto.responses.JwtToken;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.entities.User;
 import com.example.project.users.repositories.UserRepository;
@@ -34,10 +29,6 @@ public class UserServiceImpl implements UserService  {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository repository;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private TokenProvider tokenProvider;
 
     @Override
     @Transactional
@@ -92,14 +83,6 @@ public class UserServiceImpl implements UserService  {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("Username not found"));
-    }
-
-    @Override
-    public JwtToken signIn(SignInDto dto) {
-        var userNamePassWord = new UsernamePasswordAuthenticationToken(dto.username(), dto.rawPassword());
-        var authUser = authenticationManager.authenticate(userNamePassWord);
-        var accessToken = tokenProvider.generateAccessToken((User) authUser);
-        return new JwtToken(accessToken);
     }
     
 }
