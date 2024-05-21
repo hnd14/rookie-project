@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class UserDetails {
+public class UserInfos {
     @Column(name = "phone_number", table = "user_details")
     String phoneNumber;
 

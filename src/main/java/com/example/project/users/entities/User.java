@@ -1,5 +1,7 @@
 package com.example.project.users.entities;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -20,6 +22,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Table(name = "users")
 @SecondaryTable(name = "user_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "users_id"))
@@ -27,7 +33,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails{
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -43,7 +49,7 @@ public class User {
     private String password;
 
     @Embedded
-    private UserDetails userDetails;
+    private UserInfos userInfos;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -52,4 +58,33 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "role_name")
     )
     private Set<Role> roles;
+
+
+    @Override
+    public boolean isAccountNonExpired () {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked () {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired () {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled () {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities () {
+        if ( this.roles != null ) {
+            return this.roles.stream().map(e -> new SimpleGrantedAuthority(e.getRoleName())).toList();
+        }
+        return Collections.emptyList();
+    }
 }
