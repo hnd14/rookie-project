@@ -1,8 +1,6 @@
 package com.example.project.jwt;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -45,6 +43,6 @@ public class TokenProvider {
     }
 
     private Instant generateExpireDate(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.UTC);
+        return Instant.now().plusSeconds(2*3600);
     }
 }
