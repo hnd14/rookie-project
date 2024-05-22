@@ -2,7 +2,11 @@ package com.example.project.products.services.Impl;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,8 @@ public class ProductServiceImpl implements ProductService{
     ProductRepository repo;
     @Autowired
     ProductMapper mapper;
+    private final Integer DEFAULT_PAGE_SIZE = 10;
+    private final String DEFAULT_SORT_BY = "name";
 
 
     @Override
@@ -32,17 +38,30 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> findProductWithFilter(ProductSearchDto dto) {
         String productName = dto.name() == null?"":dto.name();
         Double minPrice = dto.minPrice();
-        Double maxPrice = dto.maxPrice();
+        Double maxPrice = dto.maxPrice();   
         Long categoryId = dto.categoriesId();
+        Boolean isFeatured = dto.isFeatured().orElse(false);
         Specification<Product> specification = (root, query, cb) ->{
             var namePredicate = cb.like(cb.lower(root.get("name")), "%"+productName.toLowerCase()+"%");
             var minPricePredicate = minPrice == null?cb.conjunction():cb.greaterThan(root.get("salePrice"), minPrice);
             var maxPricePredicate = maxPrice == null?cb.conjunction():cb.lessThan(root.get("salePrice"), maxPrice);
             var productCategory = root.join("categories");
-            var categoryPredicate = categoryId == null?cb.conjunction():cb.equal(productCategory.get("category").get("id"), categoryId);
-            return cb.and(namePredicate, maxPricePredicate, minPricePredicate, categoryPredicate);
+            var categoryPredicate = categoryId == null?cb.conjunction()
+            :cb.equal(productCategory.get("category").get("id"), categoryId);
+            var isFeaturedPredicate = isFeatured?cb.isTrue(root.get("isFeatured")):cb.conjunction();
+            return cb.and(namePredicate, minPricePredicate, maxPricePredicate, categoryPredicate, isFeaturedPredicate);
         };
-        return repo.findAll(specification);
+
+        var sortBy = dto.sortBy().orElse(DEFAULT_SORT_BY);
+        String sortDir =dto.direction().orElse("ASC");
+        Sort.Direction direction = sortDir.equals("DESC")?Direction.DESC:Direction.ASC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        Integer pageSize = dto.pageSize().orElse(DEFAULT_PAGE_SIZE);
+        Integer pageNumber = dto.pageNumber().orElse(1);
+        var page = PageRequest.of(pageNumber-1, pageSize, sort);
+        
+        return repo.findAll(specification,page).toList();   
     }
 
 }

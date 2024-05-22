@@ -1,3 +1,14 @@
 package com.example.project.products.dto.Requests;
 
-public record ProductSearchDto(String name, Long categoriesId, Double minPrice, Double maxPrice) {}
+import java.util.Optional;
+
+
+public record ProductSearchDto(String name,
+  Long categoriesId,
+  Double minPrice, 
+  Double maxPrice,
+  Optional<String> sortBy,
+  Optional<String> direction, 
+  Optional<Integer> pageSize,
+  Optional<Integer> pageNumber,
+  Optional<Boolean> isFeatured) {}
