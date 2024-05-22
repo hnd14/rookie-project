@@ -93,14 +93,14 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("Username not found"));
+        return repository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Username not found"));
     }
 
     @Override
     public JwtToken signIn(SignInDto dto) {
         var userNamePassWord = new UsernamePasswordAuthenticationToken(dto.username(), dto.rawPassword());
         var authUser = authenticationManager.authenticate(userNamePassWord);
-        var accessToken = tokenProvider.generateAccessToken((User) authUser);
+        var accessToken = tokenProvider.generateAccessToken((User) authUser.getPrincipal());
         return new JwtToken(accessToken);
     }
     
