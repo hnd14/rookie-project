@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.project.products.dto.Requests.EditRatingDto;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.repositories.ProductRepository;
+import com.example.project.ratings.dto.requests.EditRatingDto;
 import com.example.project.ratings.dto.requests.PostNewRatingDto;
 import com.example.project.ratings.dto.responses.AverageRatingDto;
 import com.example.project.ratings.dto.responses.NewRatingPostedDto;
@@ -67,8 +67,8 @@ public class RatingServiceImpl implements RatingService {
 
     @Transactional
     @Override
-    public RatingDetailsDto editRating(EditRatingDto dto){
-        Rating rating = ratingRepository.findById(dto.ratingId()).orElseThrow(NotFoundException::new);
+    public RatingDetailsDto editRating(Long ratingId, EditRatingDto dto){
+        Rating rating = ratingRepository.findById(ratingId).orElseThrow(NotFoundException::new);
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null 
             || !authentication.isAuthenticated()
