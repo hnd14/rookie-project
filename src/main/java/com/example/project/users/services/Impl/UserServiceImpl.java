@@ -92,6 +92,9 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username.isBlank()){
+            return null;
+        }
         return repository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Username not found"));
     }
 
