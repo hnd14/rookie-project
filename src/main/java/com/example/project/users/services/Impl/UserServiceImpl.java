@@ -21,8 +21,7 @@ import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.entities.User;
 import com.example.project.users.repositories.UserRepository;
 import com.example.project.users.services.UserService;
-import com.example.project.util.entities.NotFoundException;
-
+import com.example.project.util.exceptions.NotFoundException;
 
 import jakarta.validation.ValidationException;
 
