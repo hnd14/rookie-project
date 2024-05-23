@@ -18,7 +18,7 @@ public interface UserService extends UserDetailsService{
 
     UserReturnDto getUserById(Long id);
 
-    UserReturnDto updateUserInfo(Long id, UpdateUserInfoDto dto);
+    UserReturnDto updateUserInfo(String username, UpdateUserInfoDto dto);
 
     void deleteUser(Long id);
 

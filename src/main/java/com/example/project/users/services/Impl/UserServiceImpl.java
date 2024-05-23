@@ -76,8 +76,8 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     @Transactional
-    public UserReturnDto updateUserInfo(Long id,UpdateUserInfoDto dto){
-        User userToUpdate = repository.findById(id).orElseThrow(NotFoundException::new);
+    public UserReturnDto updateUserInfo(String username,UpdateUserInfoDto dto){
+        User userToUpdate = repository.findOneByUsername(username).orElseThrow(NotFoundException::new);
         userToUpdate.setPassword(passwordEncoder.encode(dto.rawPassword()));
         userToUpdate.setUserInfos(dto.details());
         repository.save(userToUpdate);
