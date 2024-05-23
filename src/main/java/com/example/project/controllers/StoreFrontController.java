@@ -22,6 +22,7 @@ import com.example.project.ratings.dto.requests.GetAverageRatingDto;
 import com.example.project.ratings.dto.requests.PostNewRatingDto;
 import com.example.project.ratings.dto.responses.AverageRatingDto;
 import com.example.project.ratings.dto.responses.NewRatingPostedDto;
+import com.example.project.ratings.dto.responses.RatingDetailsDto;
 import com.example.project.ratings.services.RatingService;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
@@ -65,13 +66,18 @@ public class StoreFrontController {
         return userService.updateUserInfo(username, dto);
     }
 
-    @PostMapping("/products/ratings")
-    public NewRatingPostedDto postRating(@RequestBody PostNewRatingDto dto){
-        return ratingService.postNewRating(dto);
+    @PostMapping("/products/{id}/ratings")
+    public NewRatingPostedDto postRating(@PathVariable Long id,@RequestBody PostNewRatingDto dto){
+        return ratingService.postNewRating(id, dto);
     }
 
-    @GetMapping("/products/ratings")
-    public AverageRatingDto getAvgRating(GetAverageRatingDto dto){
-        return ratingService.getAvgRating(dto);
+    @GetMapping("/products/{id}/ratings/avg")
+    public AverageRatingDto getAvgRating(@PathVariable Long id){
+        return ratingService.getAvgRating(id);
+    }
+
+    @GetMapping("/products/{id}/ratings")
+    public List<RatingDetailsDto> getAllRating(Long id){
+        return ratingService.getAllRatingsFor(id);
     }
 }   

@@ -40,6 +40,10 @@ public class Rating extends Auditor{
     @EqualsAndHashCode.Exclude
     Integer scores;
 
+    @Column
+    @EqualsAndHashCode.Exclude
+    String comment;
+
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id"),

@@ -1,5 +1,8 @@
 package com.example.project.ratings.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -7,10 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.repositories.ProductRepository;
-import com.example.project.ratings.dto.requests.GetAverageRatingDto;
 import com.example.project.ratings.dto.requests.PostNewRatingDto;
 import com.example.project.ratings.dto.responses.AverageRatingDto;
 import com.example.project.ratings.dto.responses.NewRatingPostedDto;
+import com.example.project.ratings.dto.responses.RatingDetailsDto;
 import com.example.project.ratings.entities.Rating;
 import com.example.project.ratings.repositories.RatingRepository;
 import com.example.project.ratings.services.RatingService;
@@ -26,7 +29,7 @@ public class RatingServiceImpl implements RatingService {
     private UserRepository userRepository;
 
     @Override
-	public NewRatingPostedDto postNewRating(PostNewRatingDto dto){
+	public NewRatingPostedDto postNewRating(Long productId, PostNewRatingDto dto){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null 
             || !authentication.isAuthenticated()
@@ -36,7 +39,7 @@ public class RatingServiceImpl implements RatingService {
         var username = authentication.getPrincipal().toString();
         Rating newRating = new Rating();
         newRating.setScores(dto.scores());
-        newRating.setProduct(productRepository.findById(dto.productId()).orElseThrow(ProductNotFoundException::new));
+        newRating.setProduct(productRepository.findById(productId).orElseThrow(ProductNotFoundException::new));
         User user =userRepository.findOneByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Username not found"));
         newRating.setUser(user);
         ratingRepository.save(newRating);
@@ -44,7 +47,14 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-	public AverageRatingDto getAvgRating(GetAverageRatingDto dto){
-        return new AverageRatingDto(ratingRepository.findAverageRatingForProduct(dto.productId()));
+	public AverageRatingDto getAvgRating(Long productId){
+        return new AverageRatingDto(ratingRepository.findAverageRatingForProduct(productId));
     }
+
+	@Override
+	public List<RatingDetailsDto> getAllRatingsFor(Long productId) {
+		return ratingRepository.findByProduct(productId).stream()
+        .map(rating -> new RatingDetailsDto(rating.getId(),rating.getUser().getUsername(), rating.getScores(), rating.getComment())
+        ).collect(Collectors.toList());
+	}
 }
