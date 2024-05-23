@@ -3,11 +3,11 @@ package com.example.project.products.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.example.project.util.entities.Auditor;
 import com.example.project.util.entities.Image;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +26,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-public class Product {
+@EqualsAndHashCode(callSuper = false)
+public class Product extends Auditor{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -53,7 +53,4 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<Image> images;
-
-    @Embedded
-    private Auditor audit;
 }   

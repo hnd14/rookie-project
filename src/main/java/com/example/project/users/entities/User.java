@@ -26,6 +26,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.project.util.entities.Auditor;
+
 @Entity
 @Table(name = "users")
 @SecondaryTable(name = "user_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "users_id"))
@@ -33,7 +35,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails{
+public class User extends Auditor implements UserDetails{
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -50,6 +52,9 @@ public class User implements UserDetails{
 
     @Embedded
     private UserInfos userInfos;
+
+    // @Embedded
+    // private Auditor auditor;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
