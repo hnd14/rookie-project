@@ -13,10 +13,11 @@ import com.example.project.ratings.dto.responses.AverageRatingDto;
 import com.example.project.ratings.dto.responses.NewRatingPostedDto;
 import com.example.project.ratings.entities.Rating;
 import com.example.project.ratings.repositories.RatingRepository;
+import com.example.project.ratings.services.RatingService;
 import com.example.project.users.entities.User;
 import com.example.project.users.repositories.UserRepository;
 
-public class RatingServiceImpl {
+public class RatingServiceImpl implements RatingService {
     @Autowired
     private RatingRepository ratingRepository;
     @Autowired
@@ -24,7 +25,8 @@ public class RatingServiceImpl {
     @Autowired
     private UserRepository userRepository;
 
-    public NewRatingPostedDto postNewRating(PostNewRatingDto dto){
+    @Override
+	public NewRatingPostedDto postNewRating(PostNewRatingDto dto){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null 
             || !authentication.isAuthenticated()
@@ -41,7 +43,8 @@ public class RatingServiceImpl {
         return new NewRatingPostedDto(newRating.getId());
     }
 
-    public AverageRatingDto getAvgRating(GetAverageRatingDto dto){
+    @Override
+	public AverageRatingDto getAvgRating(GetAverageRatingDto dto){
         return new AverageRatingDto(ratingRepository.findAverageRatingForProduct(dto.productId()));
     }
 }
