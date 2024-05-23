@@ -13,4 +13,5 @@ public interface RatingService {
     AverageRatingDto getAvgRating(Long productId);
     List<RatingDetailsDto> getAllRatingsFor(Long productId);
     RatingDetailsDto editRating(EditRatingDto dto);
+    void deleteRating(Long ratingId);
 }
