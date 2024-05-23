@@ -46,7 +46,6 @@ public class Auditor {
 
     void setCreatedBy(){
         String username = "Anonymous";
-        System.out.println("Hello");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null 
             || !authentication.isAuthenticated()

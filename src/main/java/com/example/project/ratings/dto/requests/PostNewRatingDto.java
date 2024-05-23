@@ -6,6 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public record PostNewRatingDto(@NotBlank Long userId,
                                 @NotBlank Long productId,
-                                @NotBlank @Min(value = 1) @Max(value=5) Long scores) {
+                                @NotBlank @Min(value = 1) @Max(value=5) Integer scores) {
 
 }
