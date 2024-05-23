@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
 import com.example.project.products.services.ProductServiceStore;
+import com.example.project.ratings.dto.requests.GetAverageRatingDto;
 import com.example.project.ratings.dto.requests.PostNewRatingDto;
+import com.example.project.ratings.dto.responses.AverageRatingDto;
 import com.example.project.ratings.dto.responses.NewRatingPostedDto;
 import com.example.project.ratings.services.RatingService;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
@@ -66,5 +68,10 @@ public class StoreFrontController {
     @PostMapping("/products/ratings")
     public NewRatingPostedDto postRating(@RequestBody PostNewRatingDto dto){
         return ratingService.postNewRating(dto);
+    }
+
+    @GetMapping("/products/ratings")
+    public AverageRatingDto getAvgRating(GetAverageRatingDto dto){
+        return ratingService.getAvgRating(dto);
     }
 }   
