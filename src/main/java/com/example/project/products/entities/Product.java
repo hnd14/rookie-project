@@ -3,9 +3,11 @@ package com.example.project.products.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.project.util.entities.Auditor;
 import com.example.project.util.entities.Image;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -51,4 +53,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<Image> images;
+
+    @Embedded
+    private Auditor audit;
 }   
