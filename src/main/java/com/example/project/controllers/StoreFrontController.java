@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
 import com.example.project.products.services.ProductServiceStore;
+import com.example.project.ratings.dto.requests.PostNewRatingDto;
+import com.example.project.ratings.dto.responses.NewRatingPostedDto;
+import com.example.project.ratings.services.RatingService;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.UserReturnDto;
@@ -29,6 +33,8 @@ public class StoreFrontController {
     ProductServiceStore productService;
     @Autowired
     UserService userService;
+    @Autowired
+    RatingService ratingService;
     
     @GetMapping("/products/{id}")
     ProductCustomerDto getProductById(@PathVariable Long id){
@@ -49,7 +55,16 @@ public class StoreFrontController {
 
     @PutMapping("/me")
     public UserReturnDto updateUserInfo(@RequestBody UpdateUserInfoDto dto){
-        Long id=Long.valueOf(1);
-        return userService.updateUserInfo(id, dto);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication==null || authentication.isAuthenticated()){
+            throw new SecurityException("You need to log in to use this function.");
+        }
+        var username = authentication.getPrincipal().toString();
+        return userService.updateUserInfo(username, dto);
     }
-}
+
+    @PostMapping("/products/ratings")
+    public NewRatingPostedDto postRating(@RequestBody PostNewRatingDto dto){
+        return ratingService.postNewRating(dto);
+    }
+}   
