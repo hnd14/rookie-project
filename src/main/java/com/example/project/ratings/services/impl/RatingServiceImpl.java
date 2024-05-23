@@ -92,11 +92,11 @@ public class RatingServiceImpl implements RatingService {
         if (authentication == null 
             || !authentication.isAuthenticated()
             || authentication instanceof AnonymousAuthenticationToken){
-            throw new SecurityException("You need to log in to edit a rating");
+            throw new SecurityException("You need to log in to delete a rating");
         }
         var username = authentication.getPrincipal().toString();
         if (!username.equals(rating.getUser().getUsername())){
-            throw new SecurityException("You are not allowed to edit this rating");
+            throw new SecurityException("You are not allowed to delete this rating");
         }
         ratingRepository.delete(rating);
     }
