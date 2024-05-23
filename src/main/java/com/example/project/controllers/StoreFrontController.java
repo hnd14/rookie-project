@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
 import com.example.project.products.services.ProductServiceStore;
+import com.example.project.ratings.dto.requests.EditRatingDto;
 import com.example.project.ratings.dto.requests.PostNewRatingDto;
 import com.example.project.ratings.dto.responses.AverageRatingDto;
 import com.example.project.ratings.dto.responses.NewRatingPostedDto;
@@ -66,6 +68,7 @@ public class StoreFrontController {
     }
 
     @PostMapping("/products/{id}/ratings")
+    @ResponseStatus(HttpStatus.CREATED)
     public NewRatingPostedDto postRating(@PathVariable Long id,@RequestBody PostNewRatingDto dto){
         return ratingService.postNewRating(id, dto);
     }
@@ -76,7 +79,17 @@ public class StoreFrontController {
     }
 
     @GetMapping("/products/{id}/ratings")
-    public List<RatingDetailsDto> getAllRating(Long id){
+    public List<RatingDetailsDto> getAllRating(@PathVariable Long id){
         return ratingService.getAllRatingsFor(id);
+    }
+
+    @PutMapping("/ratings/{id}")
+    public RatingDetailsDto editRating(@PathVariable Long id, @RequestBody EditRatingDto dto){
+        return ratingService.editRating(id,dto);
+    }
+
+    @DeleteMapping("/ratings/{id}")
+    public void deleteRating(@PathVariable Long id){
+        ratingService.deleteRating(id);
     }
 }   
