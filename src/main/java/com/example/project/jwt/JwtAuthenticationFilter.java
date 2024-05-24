@@ -1,6 +1,7 @@
 package com.example.project.jwt;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -23,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
     protected void doFilterInternal (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
-        var token = this.recoverToken(request);
+        var token = this.recoverTokenFromCookie(request);
         if ( token != null ) {
             var login = tokenProvider.validateToken(token);
             var user = userService.loadUserByUsername(login);
@@ -39,5 +41,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return null;
         }
         return authHeader.replace("Bearer ", "");
+    }
+
+    private String recoverTokenFromCookie (HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return null;
+        }
+        return List.of(cookies).stream().filter(c->(c.getName().equals("accessToken"))).findFirst().map(c->c.getValue()).orElse("");
     }
 }
