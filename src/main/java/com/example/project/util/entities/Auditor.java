@@ -51,8 +51,9 @@ public class Auditor {
             || !authentication.isAuthenticated()
             || authentication instanceof AnonymousAuthenticationToken) {
             username = "Anonymous";
+        }else{
+            username = authentication.getPrincipal().toString();
         }
-        username = authentication.getPrincipal().toString();
         this.createdBy = username;
     }
 
@@ -74,8 +75,9 @@ public class Auditor {
             || !authentication.isAuthenticated()
             || authentication instanceof AnonymousAuthenticationToken) {
             username = "Anonymous";
+        }else{
+            username = authentication.getPrincipal().toString();
         }
-        username = authentication.getPrincipal().toString();
         this.updatedBy = username;
     }
 }
