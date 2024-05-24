@@ -20,10 +20,6 @@ import com.example.project.jwt.TokenProvider;
 
 @Configuration
 public class AuthConfig {
-    // @Bean 
-    // AuditorAware<String> auditorAware(){
-    //     return new ApplicationAuditAware();
-    // }
 
     @Bean
     JwtAuthenticationFilter filter(TokenProvider tokenProvider, UserDetailsService userService){
@@ -43,9 +39,17 @@ public class AuthConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.GET, "/**").permitAll()
-            .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/store/*").permitAll()
+            .requestMatchers(HttpMethod.POST,"/auth/*").permitAll()
             .requestMatchers(HttpMethod.POST,"/store/sign-up").permitAll()
+            .requestMatchers(HttpMethod.POST,"/store/products/*").hasRole("CUSTOMER")
+            .requestMatchers(HttpMethod.PUT, "/store/me/*").hasRole("CUSTOMER")
+            .requestMatchers(HttpMethod.PUT, "/store/ratings/*").hasRole("CUSTOMER")
+            .requestMatchers(HttpMethod.DELETE, "/store/ratings/*").hasRole("CUSTOMER")
+            .requestMatchers(HttpMethod.GET, "/store-back/*").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/store-back/*").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/store-back/*").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/store-back/*").hasRole("ADMIN")
             .anyRequest().authenticated())
         .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
