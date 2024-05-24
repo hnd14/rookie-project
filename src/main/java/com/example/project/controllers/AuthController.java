@@ -10,7 +10,8 @@ import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.responses.JwtToken;
 import com.example.project.users.services.UserService;
 
-
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RequestMapping("/auth")
@@ -19,8 +20,12 @@ public class AuthController extends V1Rest {
     @Autowired
     private UserService userService;
     
-    @PostMapping("/signin")
-    public JwtToken signIn(@RequestBody @Valid SignInDto dto){
-        return userService.signIn(dto);
+    @PostMapping("/sign-in")
+    public JwtToken signIn(@RequestBody @Valid SignInDto dto, HttpServletResponse response){
+        var jwtToken = userService.signIn(dto);
+        Cookie cookie = new Cookie("accessToken", jwtToken.accessToken());
+        cookie.setPath("/"); 
+        response.addCookie(cookie);
+        return jwtToken;
     } 
 }
