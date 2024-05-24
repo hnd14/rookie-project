@@ -70,6 +70,7 @@ public class ProductServiceImpl implements ProductService{
         Double maxPrice = dto.maxPrice();   
         Long categoryId = dto.categoriesId();
         Boolean isFeatured = dto.isFeatured().orElse(false);
+        
         var sortBy = dto.sortBy().orElse(DEFAULT_SORT_BY);
         String sortDir =dto.direction().orElse("ASC");
         Sort.Direction direction = sortDir.equals("DESC")?Direction.DESC:Direction.ASC;
