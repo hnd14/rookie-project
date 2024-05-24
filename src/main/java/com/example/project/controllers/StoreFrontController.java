@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +30,7 @@ import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.services.UserService;
+import com.example.project.util.entities.PagedDto;
 
 @RestController
 @RequestMapping("/store")
@@ -79,8 +81,8 @@ public class StoreFrontController extends V1Rest {
     }
 
     @GetMapping("/products/{id}/ratings")
-    public List<RatingDetailsDto> getAllRating(@PathVariable Long id){
-        return ratingService.getAllRatingsFor(id);
+    public List<RatingDetailsDto> getAllRating(@PathVariable Long id,@RequestParam PagedDto pagingDto){
+        return ratingService.getAllRatingsFor(id, pagingDto);
     }
 
     @PutMapping("/ratings/{id}")
