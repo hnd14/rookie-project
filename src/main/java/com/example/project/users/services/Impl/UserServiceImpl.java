@@ -1,6 +1,9 @@
 package com.example.project.users.services.Impl;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +21,9 @@ import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.JwtToken;
 import com.example.project.users.dto.responses.UserReturnDto;
+import com.example.project.users.entities.Role;
 import com.example.project.users.entities.User;
+import com.example.project.users.repositories.RoleRepository;
 import com.example.project.users.repositories.UserRepository;
 import com.example.project.users.services.UserService;
 import com.example.project.util.exceptions.NotFoundException;
@@ -39,6 +44,8 @@ public class UserServiceImpl implements UserService  {
     private AuthenticationManager authenticationManager;
     @Autowired
     private TokenProvider tokenProvider;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     @Transactional
@@ -64,6 +71,9 @@ public class UserServiceImpl implements UserService  {
         newUser.setUsername(dto.username());
         newUser.setEmail(dto.email());
         newUser.setPassword(passwordEncoder.encode(dto.password()));
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(roleRepository.findById("ROLE_CUSTOMER").orElse(new Role("ROLE_CUSTOMER", null)));
+        newUser.setRoles(userRoles);
         repository.save(newUser);
         return new UserReturnDto(newUser.getUsername(), newUser.getEmail());
     }
