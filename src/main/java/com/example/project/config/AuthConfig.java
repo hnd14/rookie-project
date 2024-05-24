@@ -42,7 +42,7 @@ public class AuthConfig {
             .requestMatchers(HttpMethod.GET, "/store/*").permitAll()
             .requestMatchers(HttpMethod.POST,"/auth/*").permitAll()
             .requestMatchers(HttpMethod.POST,"/store/sign-up").permitAll()
-            .requestMatchers(HttpMethod.POST,"/store/products/*").hasRole("CUSTOMER")
+            .requestMatchers(HttpMethod.POST,"/store/products/{id}/ratings").hasRole("CUSTOMER")
             .requestMatchers(HttpMethod.PUT, "/store/me/*").hasRole("CUSTOMER")
             .requestMatchers(HttpMethod.PUT, "/store/ratings/*").hasRole("CUSTOMER")
             .requestMatchers(HttpMethod.DELETE, "/store/ratings/*").hasRole("CUSTOMER")
@@ -50,7 +50,7 @@ public class AuthConfig {
             .requestMatchers(HttpMethod.POST, "/store-back/*").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/store-back/*").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/store-back/*").hasRole("ADMIN")
-            .anyRequest().authenticated())
+            .anyRequest().denyAll())
         .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
     }
