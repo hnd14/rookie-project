@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +25,7 @@ import com.example.project.ratings.repositories.RatingRepository;
 import com.example.project.ratings.services.RatingService;
 import com.example.project.users.entities.User;
 import com.example.project.users.repositories.UserRepository;
+import com.example.project.util.entities.PagedDto;
 import com.example.project.util.exceptions.NotFoundException;
 
 @Service
@@ -33,6 +37,9 @@ public class RatingServiceImpl implements RatingService {
     private ProductRepository productRepository;
     @Autowired
     private UserRepository userRepository;
+    
+    private final Integer DEFAULT_PAGE_SIZE = 10;
+    private final String DEFAULT_SORT_BY = "name";
 
     @Override
     @Transactional
@@ -59,8 +66,17 @@ public class RatingServiceImpl implements RatingService {
     }
 
 	@Override
-	public List<RatingDetailsDto> getAllRatingsFor(Long productId) {
-		return ratingRepository.findByProduct(productId).stream()
+	public List<RatingDetailsDto> getAllRatingsFor(Long productId, PagedDto dto) {
+        var sortBy = dto.sortBy().orElse(DEFAULT_SORT_BY);
+        String sortDir =dto.direction().orElse("ASC");
+        Sort.Direction direction = sortDir.equals("DESC")?Direction.DESC:Direction.ASC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        Integer pageSize = dto.pageSize().orElse(DEFAULT_PAGE_SIZE);
+        Integer pageNumber = dto.pageNumber().orElse(1);
+        var page = PageRequest.of(pageNumber-1, pageSize, sort);
+
+        return ratingRepository.findByProduct(productId, page).stream()
         .map(rating -> new RatingDetailsDto(rating.getId(),rating.getUser().getUsername(), rating.getScores(), rating.getComment())
         ).collect(Collectors.toList());
 	}
