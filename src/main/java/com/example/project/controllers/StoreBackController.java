@@ -33,7 +33,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/store-back")
 @AllArgsConstructor
-public class StoreBackController {
+public class StoreBackController extends V1Rest{
     @Autowired
     private final ProductServiceBackStore productService; 
     @Autowired

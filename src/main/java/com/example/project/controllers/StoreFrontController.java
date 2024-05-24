@@ -32,7 +32,7 @@ import com.example.project.users.services.UserService;
 
 @RestController
 @RequestMapping("/store")
-public class StoreFrontController {
+public class StoreFrontController extends V1Rest {
     @Autowired
     ProductServiceStore productService;
     @Autowired
