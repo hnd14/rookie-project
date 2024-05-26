@@ -1,5 +1,9 @@
 package com.example.project.products.exceptions;
 
-public class CategoryNotFoundException extends RuntimeException {
+import com.example.project.util.exceptions.NotFoundException;
 
+public class CategoryNotFoundException extends NotFoundException {
+    public CategoryNotFoundException(){
+        super("Category not found!");
+    }
 }

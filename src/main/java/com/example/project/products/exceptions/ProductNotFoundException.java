@@ -1,5 +1,9 @@
 package com.example.project.products.exceptions;
 
-public class ProductNotFoundException extends RuntimeException{
+import com.example.project.util.exceptions.NotFoundException;
 
+public class ProductNotFoundException extends NotFoundException{
+    public ProductNotFoundException(){
+        super("Product not found!");
+    }
 }
