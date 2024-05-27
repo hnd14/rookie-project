@@ -50,8 +50,11 @@ public class ProductServiceImpl implements ProductService{
         }
 
         static Specification<Product> hasCategory(Long categoryId){
+            if (categoryId == null){
+                return (root,query, cb) -> cb.conjunction();
+            }
             return (root, query, cb) ->{
-                var productCategory = root.join("categories",JoinType.LEFT);
+                var productCategory = root.join("categories",JoinType.INNER);
                 return categoryId == null?cb.conjunction()
                 :cb.equal(productCategory.get("category").get("id"), categoryId);
             };
