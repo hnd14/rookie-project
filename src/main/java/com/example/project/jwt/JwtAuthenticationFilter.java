@@ -27,10 +27,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
         try {
             var token = this.recoverTokenFromCookie(request);
-            if (token == null || token.isBlank()){
+            if (token == null){
                 token = this.recoverToken(request);
             }
-            if ( token != null ) {
+            if ( token != null) {
                 var login = tokenProvider.validateToken(token);
                 var user = userService.loadUserByUsername(login);
                 var authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
@@ -38,6 +38,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             SecurityContextHolder.getContext().setAuthentication(null);
+            Cookie cookie = new Cookie("accessToken", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
         }
         filterChain.doFilter(request, response);
     }
@@ -55,6 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(cookies == null){
             return null;
         }
-        return List.of(cookies).stream().filter(c->(c.getName().equals("accessToken"))).findFirst().map(c->c.getValue()).orElse("");
+        return List.of(cookies).stream().filter(c->(c.getName().equals("accessToken"))).findFirst().map(c->c.getValue()).orElse(null);
     }
 }
