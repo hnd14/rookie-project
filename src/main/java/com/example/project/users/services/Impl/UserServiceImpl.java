@@ -19,7 +19,7 @@ import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
-import com.example.project.users.dto.responses.JwtToken;
+import com.example.project.users.dto.responses.LoginResponseDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.entities.Role;
 import com.example.project.users.entities.User;
@@ -109,11 +109,19 @@ public class UserServiceImpl implements UserService  {
     }
 
     @Override
-    public JwtToken signIn(SignInDto dto) {
+    public LoginResponseDto signIn(SignInDto dto) {
         var userNamePassWord = new UsernamePasswordAuthenticationToken(dto.username(), dto.rawPassword());
         var authUser = authenticationManager.authenticate(userNamePassWord);
         var accessToken = tokenProvider.generateAccessToken((User) authUser.getPrincipal());
-        return new JwtToken(accessToken);
+        // check if authenticated user is admin
+        Boolean isAdmin = authUser.getAuthorities().stream()
+        .map((authority) -> authority.getAuthority())
+        .anyMatch((authority)->authority.equals("ROLE_ADMIN"));
+        // check if authenticated user is customer
+        Boolean isCustomer = authUser.getAuthorities().stream()
+        .map((authority) -> authority.getAuthority())
+        .anyMatch((authority)->authority.equals("ROLE_CUSTOMER"));
+        return new LoginResponseDto(accessToken, isAdmin, isCustomer);
     }
     
 }

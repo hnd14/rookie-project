@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.project.users.dto.requests.SignInDto;
-import com.example.project.users.dto.responses.JwtToken;
+import com.example.project.users.dto.responses.LoginResponseDto;
 import com.example.project.users.services.UserService;
 
 import jakarta.servlet.http.Cookie;
@@ -21,7 +21,7 @@ public class AuthController extends V1Rest {
     private UserService userService;
     
     @PostMapping("/sign-in")
-    public JwtToken signIn(@RequestBody @Valid SignInDto dto, HttpServletResponse response){
+    public LoginResponseDto signIn(@RequestBody @Valid SignInDto dto, HttpServletResponse response){
         var jwtToken = userService.signIn(dto);
         Cookie cookie = new Cookie("accessToken", jwtToken.accessToken());
         cookie.setPath("/"); 

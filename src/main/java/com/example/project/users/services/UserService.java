@@ -7,7 +7,7 @@ import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
-import com.example.project.users.dto.responses.JwtToken;
+import com.example.project.users.dto.responses.LoginResponseDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 
 public interface UserService extends UserDetailsService{
@@ -22,6 +22,6 @@ public interface UserService extends UserDetailsService{
 
     void deleteUser(Long id);
 
-    JwtToken signIn(SignInDto dto);
+    LoginResponseDto signIn(SignInDto dto);
 
 }
