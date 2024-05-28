@@ -1,13 +1,14 @@
 package com.example.project.products.services.Impl;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.project.products.dto.Requests.GetCategoriesDto;
 import com.example.project.products.dto.Responses.CategoryDto;
+import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceStore;
@@ -26,8 +27,10 @@ public class CategoryServiceStoreImpl implements CategoryServiceStore{
     }
 
     @Override
-    public List<CategoryDto> findCategoryByName(String name) {
-        return categoryService.findCategoryByName(name).stream().map(mapper::toDto).collect(Collectors.toList());    
+    public PagedDto<CategoryDto> findAllCategories(GetCategoriesDto dto) {
+        var categories = categoryService.findAllCategories(dto); 
+        var content = categories.getContent().stream().map(mapper::toDto).collect(Collectors.toList());
+        return new PagedDto<>(content,categories.getTotalPages(),categories.getNumber());
     }
 
 }

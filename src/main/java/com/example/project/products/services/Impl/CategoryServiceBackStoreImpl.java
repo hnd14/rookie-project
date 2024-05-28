@@ -1,15 +1,17 @@
 package com.example.project.products.services.Impl;
 
-import java.util.List;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.project.products.dto.Requests.GetCategoriesDto;
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
+import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.entities.Category;
 import com.example.project.products.exceptions.CategoryNotFoundException;
 import com.example.project.products.mapper.CategoryMapper;
@@ -38,8 +40,10 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     }
 
     @Override
-    public List<CategoryAdminDto> findCategoryByName(String name) {
-        return categoryService.findCategoryByName(name).stream().map(mapper::toAdminDto).collect(Collectors.toList());
+    public PagedDto<CategoryAdminDto> findAllCategories(GetCategoriesDto dto) {
+        var categories = categoryService.findAllCategories(dto); 
+        var content = categories.getContent().stream().map(mapper::toAdminDto).collect(Collectors.toList());
+        return new PagedDto<>(content,categories.getTotalPages(),categories.getNumber());
     }
 
     @Override
