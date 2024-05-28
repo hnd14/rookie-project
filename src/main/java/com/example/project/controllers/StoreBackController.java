@@ -19,7 +19,7 @@ import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Requests.UpdateProductDto;
-import com.example.project.products.dto.Responses.CategoryDto;
+import com.example.project.products.dto.Responses.CategoryAdminDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.services.CategoryServiceBackStore;
 import com.example.project.products.services.ProductServiceBackStore;
@@ -71,12 +71,12 @@ public class StoreBackController extends V1Rest{
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto createNewCategory(@Valid @RequestBody PostNewCategoryDto dto){
+    public CategoryAdminDto createNewCategory(@Valid @RequestBody PostNewCategoryDto dto){
         return categoryService.createNew(dto);
     }
 
     @GetMapping("/categories")
-    public List<CategoryDto> findCategoriesWithPartialName(@RequestParam(value = "name", required = false, defaultValue = "") String name){
+    public List<CategoryAdminDto> findCategoriesWithPartialName(@RequestParam(value = "name", required = false, defaultValue = "") String name){
         return categoryService.findCategoryByName(name);
     }
 

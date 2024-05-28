@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
-import com.example.project.products.dto.Responses.CategoryDto;
+import com.example.project.products.dto.Responses.CategoryAdminDto;
 import com.example.project.products.entities.Category;
 import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.repositories.CategoryRepository;
@@ -30,21 +30,21 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     private CategoryMapper mapper;
 
     @Override
-    public CategoryDto findCategoryById(Long id) {
-        return mapper.toDto(categoryService.getCategoryById(id));
+    public CategoryAdminDto findCategoryById(Long id) {
+        return mapper.toAdminDto(categoryService.getCategoryById(id));
     }
 
     @Override
-    public List<CategoryDto> findCategoryByName(String name) {
-        return categoryService.findCategoryByName(name).stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<CategoryAdminDto> findCategoryByName(String name) {
+        return categoryService.findCategoryByName(name).stream().map(mapper::toAdminDto).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public CategoryDto createNew(@Valid PostNewCategoryDto dto) {
+    public CategoryAdminDto createNew(@Valid PostNewCategoryDto dto) {
         Category newCategory = mapper.toNewCategory(dto);
         repo.save(newCategory);
-        return mapper.toDto(newCategory);
+        return mapper.toAdminDto(newCategory);
     }
 
     @Transactional
