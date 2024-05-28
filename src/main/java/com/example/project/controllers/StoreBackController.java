@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.project.products.dto.Requests.GetCategoriesDto;
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.dto.Requests.UpdateProductDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
+import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.services.CategoryServiceBackStore;
 import com.example.project.products.services.ProductServiceBackStore;
@@ -77,8 +79,9 @@ public class StoreBackController extends V1Rest{
     }
 
     @GetMapping("/categories")
-    public List<CategoryAdminDto> findCategoriesWithPartialName(@RequestParam(value = "name", required = false, defaultValue = "") String name){
-        return categoryService.findCategoryByName(name);
+    @ResponseBody
+    public PagedDto<CategoryAdminDto> findAllCategories(GetCategoriesDto dto){
+        return categoryService.findAllCategories(dto);
     }
 
     @DeleteMapping("/categories/{id}")
