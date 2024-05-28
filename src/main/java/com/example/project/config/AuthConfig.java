@@ -42,9 +42,10 @@ public class AuthConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
         .cors(cors -> cors.configurationSource((request) -> {
             CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(List.of("*"));
+            configuration.setAllowedOriginPatterns(List.of("*localhost:[*]"));
             configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-            configuration.setAllowedHeaders(List.of("Authorization", "Content-type", "header"));
+            configuration.setAllowedHeaders(List.of("Authorization", "Content-type", "Access-Control-Allow-Credentials"));
+            configuration.setAllowCredentials(Boolean.TRUE);
             return configuration;
         }))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
