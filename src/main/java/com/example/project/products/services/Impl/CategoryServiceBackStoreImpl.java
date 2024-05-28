@@ -14,6 +14,7 @@ import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceBackStore;
+import com.example.project.util.exceptions.DuplicatedResourceException;
 
 import jakarta.validation.Valid;
 
@@ -42,6 +43,9 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     @Override
     @Transactional
     public CategoryAdminDto createNew(@Valid PostNewCategoryDto dto) {
+        if(repo.findOneByName(dto.name()).isPresent()){
+            throw new DuplicatedResourceException();
+        }
         Category newCategory = mapper.toNewCategory(dto);
         repo.save(newCategory);
         return mapper.toAdminDto(newCategory);

@@ -9,5 +9,4 @@ public record CategoryAdminDto(Long id,
  String updatedBy,
  LocalDateTime createdTime,
  LocalDateTime updatedTime) {
-
 }

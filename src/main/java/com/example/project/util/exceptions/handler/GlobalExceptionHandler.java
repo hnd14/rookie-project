@@ -8,6 +8,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import com.example.project.util.dto.ErrorDto;
+import com.example.project.util.exceptions.DuplicatedResourceException;
 import com.example.project.util.exceptions.NotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +28,13 @@ public class GlobalExceptionHandler {
         log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 404, message);
         ErrorDto dto = new ErrorDto("404", HttpStatus.NOT_FOUND.toString(), message, null);
         return new ResponseEntity<>(dto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DuplicatedResourceException.class)
+    public ResponseEntity<ErrorDto> handleDuplicatedResourceException(DuplicatedResourceException ex, WebRequest req){
+        String message = "Resource you are trying to create already existed.";
+        log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 400, message);
+        ErrorDto dto = new ErrorDto("400", HttpStatus.BAD_REQUEST.toString(), message, null);
+        return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
 }   

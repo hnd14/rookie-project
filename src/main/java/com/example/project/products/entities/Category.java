@@ -30,7 +30,7 @@ public class Category extends Auditor{
     @Column
     private Long id;
 
-    @Column
+    @Column(unique = true)
     @NotBlank
     private String name;
 
