@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
+import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.dto.Requests.UpdateProductDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
@@ -43,7 +44,7 @@ public class StoreBackController extends V1Rest{
 
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductAdminDto createNewProduct(@RequestBody PostNewProductDto dto){
+    public ProductAdminDto createNewProduct(@RequestBody @Valid PostNewProductDto dto){
         return productService.createNewProduct(dto);
     }
 
@@ -83,7 +84,12 @@ public class StoreBackController extends V1Rest{
     @DeleteMapping("/categories/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Long id){
-        productService.deleteProduct(id);
+        categoryService.deleteCategory(id);
+    }
+
+    @PutMapping("/categories/{id}")
+    public CategoryAdminDto updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryDto dto){
+        return categoryService.update(id, dto);
     }
 
     @PostMapping("/admins")

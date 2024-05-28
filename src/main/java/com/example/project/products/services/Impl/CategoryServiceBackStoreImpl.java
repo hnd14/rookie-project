@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
+import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
 import com.example.project.products.entities.Category;
+import com.example.project.products.exceptions.CategoryNotFoundException;
 import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
@@ -54,5 +56,13 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     @Transactional
     public void deleteCategory(Long id){
         repo.deleteById(id);
+    }
+
+    @Override
+    public CategoryAdminDto update(Long id, UpdateCategoryDto dto) {
+        Category category2Update = repo.findById(id).orElseThrow(CategoryNotFoundException::new);
+        category2Update.setDesc(dto.desc());
+        repo.save(category2Update);
+        return mapper.toAdminDto(category2Update);
     }
 }
