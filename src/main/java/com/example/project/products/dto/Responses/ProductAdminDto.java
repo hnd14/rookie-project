@@ -1,5 +1,16 @@
 package com.example.project.products.dto.Responses;
 
-public record ProductAdminDto(Long id, String name, String desc, Double salePrice, Long stock, Boolean isFeatured) {
+import java.time.LocalDateTime;
+
+public record ProductAdminDto(Long id,
+ String name,
+ String desc, 
+ Double salePrice, 
+ Long stock, 
+ Boolean isFeatured, 
+ String createdBy, 
+ String updatedBy,
+ LocalDateTime createdTime,
+ LocalDateTime updatedTime) {
 
 }

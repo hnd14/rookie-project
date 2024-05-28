@@ -3,6 +3,8 @@ package com.example.project.products.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.project.util.entities.Auditor;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @AllArgsConstructor
-public class Category {
+public class Category extends Auditor{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column

@@ -4,6 +4,7 @@ import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
+import com.example.project.products.dto.Responses.CategoryAdminDto;
 import com.example.project.products.dto.Responses.CategoryDto;
 import com.example.project.products.entities.Category;
 
@@ -15,4 +16,5 @@ public interface CategoryMapper {
     @Mapping(ignore = true, target = "productsInCategory")
     Category toNewCategory(PostNewCategoryDto dto);
     CategoryDto toDto(Category category);
+    CategoryAdminDto toAdminDto(Category category);
 }
