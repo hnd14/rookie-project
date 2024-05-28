@@ -59,6 +59,7 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     }
 
     @Override
+    @Transactional
     public CategoryAdminDto update(Long id, UpdateCategoryDto dto) {
         Category category2Update = repo.findById(id).orElseThrow(CategoryNotFoundException::new);
         category2Update.setDesc(dto.desc());
