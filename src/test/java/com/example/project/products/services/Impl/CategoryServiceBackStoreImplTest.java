@@ -77,7 +77,7 @@ public class CategoryServiceBackStoreImplTest {
     @Test
     void testCategoryFindByName_whenQueriedFullName_shouldReturnListWithTheItemInside(){
         //set up
-        var expectedDto = mapper.toDto(newCat);
+        var expectedDto = mapper.toAdminDto(newCat);
         //do work
         var result = service.findCategoryByName(CATEGORY_IN_DB_NAME);
         //result
@@ -87,7 +87,7 @@ public class CategoryServiceBackStoreImplTest {
     @Test
     void testFindCategoryByName_whenQUeriedWithPartialName_shouldReturnListWithTheItemInside() {
         //set up
-        var expectedDto = mapper.toDto(newCat);
+        var expectedDto = mapper.toAdminDto(newCat);
         //do work
         var result = service.findCategoryByName(CATEGORY_IN_DB_NAME.substring(0,3));
         //result
