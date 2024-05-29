@@ -22,6 +22,7 @@ import com.example.project.products.dto.Requests.UpdateProductDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
 import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
+import com.example.project.products.dto.Responses.ProductDetailsAdminDto;
 import com.example.project.products.services.CategoryServiceBackStore;
 import com.example.project.products.services.ProductServiceBackStore;
 import com.example.project.users.dto.requests.CreateNewAdminDto;
@@ -49,7 +50,7 @@ public class StoreBackController extends V1Rest{
     }
 
     @GetMapping("/products/{id}")
-    public ProductAdminDto getProductById(@PathVariable Long id){
+    public ProductDetailsAdminDto getProductById(@PathVariable Long id){
         return productService.getProductById(id);
     }
 

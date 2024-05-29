@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
+import com.example.project.products.dto.Responses.ProductDetailsAdminDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.entities.Product;
 
@@ -17,4 +18,5 @@ public interface ProductMapper {
     @Mapping(ignore = true, target = "categories")
     Product toNewProduct(PostNewProductDto dto);
     ProductAdminDto toStaffDto(Product product);
+    ProductDetailsAdminDto toDetailsAdminDto(Product product);
 }

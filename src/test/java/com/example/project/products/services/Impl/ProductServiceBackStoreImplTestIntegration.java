@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
+import com.example.project.products.dto.Responses.ProductDetailsAdminDto;
 
 
 @SpringBootTest
@@ -22,9 +23,9 @@ public class ProductServiceBackStoreImplTestIntegration {
         String expectedProductName = "test";
         //do 
         ProductAdminDto result = service.createNewProduct(postDto);
-        ProductAdminDto postedProduct = service.getProductById(result.id());
+        ProductDetailsAdminDto postedProduct = service.getProductById(result.id());
 
         //assert
-        assertEquals(expectedProductName, postedProduct.name());
+        assertEquals(expectedProductName, postedProduct.getName());
     }
 }
