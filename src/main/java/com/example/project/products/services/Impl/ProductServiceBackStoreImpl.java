@@ -12,11 +12,13 @@ import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Requests.UpdateProductDto;
 import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
+import com.example.project.products.dto.Responses.ProductDetailsAdminDto;
 import com.example.project.products.entities.Category;
 import com.example.project.products.entities.Product;
 import com.example.project.products.entities.ProductCategory;
 import com.example.project.products.exceptions.CategoryNotFoundException;
 import com.example.project.products.exceptions.ProductNotFoundException;
+import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.mapper.ProductMapper;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.repositories.ProductCategoryRepository;
@@ -38,6 +40,8 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     ProductCategoryRepository productCategoryRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    CategoryMapper categoryMapper;
     
     @Override
     @Transactional
@@ -48,8 +52,11 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         return mapper.toStaffDto(newProduct);
     }
     @Override
-    public ProductAdminDto getProductById(Long id) {
-        return repo.findById(id).map(mapper::toStaffDto).orElseThrow(ProductNotFoundException::new);
+    public ProductDetailsAdminDto getProductById(Long id) {
+        Product product = repo.findById(id).orElseThrow(ProductNotFoundException::new);
+        ProductDetailsAdminDto result = mapper.toDetailsAdminDto(product);
+        result.setCategoriesInfo(product.getCategories().stream().map(categoryMapper::toSimpleCategoryDto).collect(Collectors.toList()));
+        return result;
     }
     @Override
     public PagedDto<ProductAdminDto> findProductWithFilter(ProductSearchDto dto) {
@@ -67,6 +74,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         productToUpdate.setSalePrice(dto.salePrice() == null?productToUpdate.getSalePrice():dto.salePrice());
         productToUpdate.setStock(dto.stock() == null?productToUpdate.getStock():dto.stock());
         productToUpdate.setIsFeatured(dto.isFeatured() == null?productToUpdate.getIsFeatured():dto.isFeatured());
+        productToUpdate.getCategories().stream().forEach((categories)->{productCategoryRepository.delete(categories);});
         addCategoriesToProduct(productToUpdate, dto.categoriesId());
         return mapper.toStaffDto(productToUpdate);
     }
@@ -76,10 +84,14 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         if (categoriesId == null) return;
         categoriesId.stream().forEach(id -> {
             Category category = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+            if(productCategoryRepository.findOneByProductAndCategory(product, category).isPresent()){
+                return;
+            }
             ProductCategory productCategory = new ProductCategory(null,product, category);
             productCategoryRepository.saveAndFlush(productCategory);
         });
     }
+
 
     @Transactional
     public void deleteProduct(Long id){
