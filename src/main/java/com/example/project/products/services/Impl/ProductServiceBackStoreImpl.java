@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Requests.UpdateProductDto;
+import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.entities.Category;
 import com.example.project.products.entities.Product;
@@ -51,8 +52,11 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         return repo.findById(id).map(mapper::toStaffDto).orElseThrow(ProductNotFoundException::new);
     }
     @Override
-    public List<ProductAdminDto> findProductWithFilter(ProductSearchDto dto) {
-        return productService.findProductWithFilter(dto).stream().map(mapper::toStaffDto).collect(Collectors.toList());
+    public PagedDto<ProductAdminDto> findProductWithFilter(ProductSearchDto dto) {
+        var content = productService.findProductWithFilter(dto);
+        return new PagedDto<>(content.getContent().stream().map(mapper::toStaffDto).collect(Collectors.toList()),
+        content.getTotalPages(), 
+        content.getNumber());
     }
 
     @Override

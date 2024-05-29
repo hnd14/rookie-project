@@ -1,9 +1,8 @@
 package com.example.project.products.services.Impl;
 
-import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -67,7 +66,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> findProductWithFilter(ProductSearchDto dto) {
+    public Page<Product> findProductWithFilter(ProductSearchDto dto) {
         String productName = dto.name() == null?"":dto.name();
         Double minPrice = dto.minPrice();
         Double maxPrice = dto.maxPrice();   
@@ -87,7 +86,7 @@ public class ProductServiceImpl implements ProductService{
                                             .and(ProductSpecifications.priceBetween(minPrice, maxPrice))
                                             .and(ProductSpecifications.isFeatured(isFeatured))
                                             .and(ProductSpecifications.hasCategory(categoryId))
-                                            , page).toList();   
+                                            , page);   
     }
 
 }
