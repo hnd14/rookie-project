@@ -51,8 +51,9 @@ public class AuthConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.GET, "/store/**").permitAll()
-            .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
+            .requestMatchers(HttpMethod.POST,"/auth/sign-in").permitAll()
             .requestMatchers(HttpMethod.POST,"/store/sign-up").permitAll()
+            .requestMatchers(HttpMethod.GET,"/auth/log-out").authenticated()
             .requestMatchers(HttpMethod.POST,"/store/products/{id}/ratings").hasRole("CUSTOMER")
             .requestMatchers(HttpMethod.PUT, "/store/me").hasRole("CUSTOMER")
             .requestMatchers(HttpMethod.PUT, "/store/ratings/**").hasRole("CUSTOMER")
