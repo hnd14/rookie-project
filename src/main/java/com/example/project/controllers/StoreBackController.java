@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.project.products.dto.Requests.GetCategoriesDto;
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
@@ -28,6 +27,7 @@ import com.example.project.products.services.ProductServiceBackStore;
 import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.services.UserService;
+import com.example.project.util.entities.PagingDto;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -79,7 +79,7 @@ public class StoreBackController extends V1Rest{
 
     @GetMapping("/categories")
     @ResponseBody
-    public PagedDto<CategoryAdminDto> findAllCategories(GetCategoriesDto dto){
+    public PagedDto<CategoryAdminDto> findAllCategories(PagingDto dto){
         return categoryService.findAllCategories(dto);
     }
 

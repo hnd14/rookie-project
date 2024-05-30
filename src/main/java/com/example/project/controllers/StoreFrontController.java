@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
+import com.example.project.products.dto.Responses.CategoryDto;
+import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
+import com.example.project.products.services.CategoryServiceStore;
 import com.example.project.products.services.ProductServiceStore;
 import com.example.project.ratings.dto.requests.EditRatingDto;
 import com.example.project.ratings.dto.requests.PostNewRatingDto;
@@ -30,7 +33,8 @@ import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.services.UserService;
-import com.example.project.util.entities.PagedDto;
+import com.example.project.util.entities.PagingDto;
+
 
 @RestController
 @RequestMapping("/store")
@@ -41,6 +45,8 @@ public class StoreFrontController extends V1Rest {
     UserService userService;
     @Autowired
     RatingService ratingService;
+    @Autowired
+    CategoryServiceStore categoryService;
     
     @GetMapping("/products/{id}")
     ProductCustomerDto getProductById(@PathVariable Long id){
@@ -81,7 +87,7 @@ public class StoreFrontController extends V1Rest {
     }
 
     @GetMapping("/products/{id}/ratings")
-    public List<RatingDetailsDto> getAllRating(@PathVariable Long id,@RequestParam PagedDto pagingDto){
+    public List<RatingDetailsDto> getAllRating(@PathVariable Long id,@RequestParam PagingDto pagingDto){
         return ratingService.getAllRatingsFor(id, pagingDto);
     }
 
@@ -93,5 +99,10 @@ public class StoreFrontController extends V1Rest {
     @DeleteMapping("/ratings/{id}")
     public void deleteRating(@PathVariable Long id){
         ratingService.deleteRating(id);
+    }
+
+    @GetMapping("/categories")
+    public PagedDto<CategoryDto> getCategory(PagingDto dto){
+        return categoryService.findAllCategories(dto);
     }
 }   

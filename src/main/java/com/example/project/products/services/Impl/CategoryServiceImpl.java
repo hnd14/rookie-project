@@ -9,11 +9,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.project.products.dto.Requests.GetCategoriesDto;
+
 import com.example.project.products.entities.Category;
 import com.example.project.products.exceptions.CategoryNotFoundException;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
+import com.example.project.util.entities.PagingDto;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<Category> findAllCategories(GetCategoriesDto dto) {
+    public Page<Category> findAllCategories(PagingDto dto) {
         var sortBy = dto.sortBy().orElse(DEFAULT_SORT_BY);
         String sortDir =dto.direction().orElse("ASC");
         Sort.Direction direction = sortDir.equals("DESC")?Direction.DESC:Direction.ASC;

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.project.products.dto.Requests.GetCategoriesDto;
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
@@ -18,6 +17,7 @@ import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceBackStore;
+import com.example.project.util.entities.PagingDto;
 import com.example.project.util.exceptions.DuplicatedResourceException;
 
 import jakarta.validation.Valid;
@@ -40,7 +40,7 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     }
 
     @Override
-    public PagedDto<CategoryAdminDto> findAllCategories(GetCategoriesDto dto) {
+    public PagedDto<CategoryAdminDto> findAllCategories(PagingDto dto) {
         var categories = categoryService.findAllCategories(dto); 
         var content = categories.getContent().stream().map(mapper::toAdminDto).collect(Collectors.toList());
         return new PagedDto<>(content,categories.getTotalPages(),categories.getNumber());
