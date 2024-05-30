@@ -2,12 +2,16 @@ package com.example.project.users.services.Impl;
 
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -113,15 +117,27 @@ public class UserServiceImpl implements UserService  {
         var userNamePassWord = new UsernamePasswordAuthenticationToken(dto.username(), dto.rawPassword());
         var authUser = authenticationManager.authenticate(userNamePassWord);
         var accessToken = tokenProvider.generateAccessToken((User) authUser.getPrincipal());
-        // check if authenticated user is admin
-        Boolean isAdmin = authUser.getAuthorities().stream()
-        .map((authority) -> authority.getAuthority())
-        .anyMatch((authority)->authority.equals("ROLE_ADMIN"));
-        // check if authenticated user is customer
-        Boolean isCustomer = authUser.getAuthorities().stream()
-        .map((authority) -> authority.getAuthority())
-        .anyMatch((authority)->authority.equals("ROLE_CUSTOMER"));
-        return new LoginResponseDto(accessToken, isAdmin, isCustomer);
+        return new LoginResponseDto(Optional.of(accessToken),
+                                    authUser.getName(), 
+                                    authUser.getAuthorities().stream().map((auth)->auth.getAuthority()).collect(Collectors.toList()), 
+                                    true);
     }
+
+    @Override
+    public LoginResponseDto verify() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null 
+            || !authentication.isAuthenticated()
+            || authentication instanceof AnonymousAuthenticationToken){
+            return new LoginResponseDto(null, null, null, false);
+        }
+
+        return new LoginResponseDto(Optional.empty(),
+        authentication.getName(), 
+        authentication.getAuthorities().stream().map((auth)->(String)auth.getAuthority()).collect(Collectors.toList()) , 
+        true);
+    }
+
+    
     
 }

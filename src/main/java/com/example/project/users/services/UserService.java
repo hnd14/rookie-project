@@ -24,4 +24,6 @@ public interface UserService extends UserDetailsService{
 
     LoginResponseDto signIn(SignInDto dto);
 
+    LoginResponseDto verify();
+
 }

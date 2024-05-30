@@ -26,7 +26,7 @@ public class AuthController extends V1Rest {
     @PostMapping("/sign-in")
     public LoginResponseDto signIn(@RequestBody @Valid SignInDto dto, HttpServletResponse response){
         var jwtToken = userService.signIn(dto);
-        Cookie cookie = new Cookie("accessToken", jwtToken.accessToken());
+        Cookie cookie = new Cookie("accessToken", jwtToken.accessToken().get());
         cookie.setPath("/"); 
         response.addCookie(cookie);
         return jwtToken;
@@ -39,5 +39,10 @@ public class AuthController extends V1Rest {
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
+    }
+
+    @GetMapping("/verify")
+    public LoginResponseDto verify(){
+        return userService.verify();
     }
 }

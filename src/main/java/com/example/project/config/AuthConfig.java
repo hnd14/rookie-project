@@ -52,6 +52,7 @@ public class AuthConfig {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.GET, "/store/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/auth/sign-in").permitAll()
+            .requestMatchers(HttpMethod.GET,"/auth/verify").permitAll()
             .requestMatchers(HttpMethod.POST,"/store/sign-up").permitAll()
             .requestMatchers(HttpMethod.GET,"/auth/log-out").authenticated()
             .requestMatchers(HttpMethod.POST,"/store/products/{id}/ratings").hasRole("CUSTOMER")
