@@ -55,7 +55,7 @@ public class StoreFrontController extends V1Rest {
 
     @GetMapping("/products")
     @ResponseBody
-    List<ProductCustomerDto> findProductsWithFilter(ProductSearchDto dto){
+    PagedDto<ProductCustomerDto> findProductsWithFilter(ProductSearchDto dto){
         return productService.findProductWithFilter(dto);
     }
 
@@ -63,6 +63,11 @@ public class StoreFrontController extends V1Rest {
     @ResponseStatus(HttpStatus.CREATED)
     public UserReturnDto signUp(@RequestBody CustomerSignUpDto dto){
         return userService.signUp(dto);
+    }
+
+    @GetMapping("/categories")
+    public PagedDto<CategoryDto> getCategory(PagingDto dto){
+        return categoryService.findAllCategories(dto);
     }
 
     @PutMapping("/me")
@@ -101,8 +106,5 @@ public class StoreFrontController extends V1Rest {
         ratingService.deleteRating(id);
     }
 
-    @GetMapping("/categories")
-    public PagedDto<CategoryDto> getCategory(PagingDto dto){
-        return categoryService.findAllCategories(dto);
-    }
+
 }   

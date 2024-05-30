@@ -1,7 +1,5 @@
 package com.example.project.products.services.Impl;
 
-
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
+import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.mapper.ProductMapper;
@@ -38,8 +37,11 @@ public class ProductServiceStoreImpl implements ProductServiceStore{
     }
 
     @Override
-    public List<ProductCustomerDto> findProductWithFilter(ProductSearchDto dto) {
-        return productService.findProductWithFilter(dto).stream().map(mapper::toCustomerDto).collect(Collectors.toList());
+    public PagedDto<ProductCustomerDto> findProductWithFilter(ProductSearchDto dto) {
+        var content = productService.findProductWithFilter(dto);
+        return new PagedDto<>(content.getContent().stream().map(mapper::toCustomerDto).collect(Collectors.toList()),
+        content.getTotalPages(), 
+        content.getNumber());
     }
 
 
