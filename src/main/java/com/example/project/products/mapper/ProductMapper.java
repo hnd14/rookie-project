@@ -13,6 +13,7 @@ import com.example.project.products.entities.Product;
 @Mapper(componentModel = "spring")
 @Component
 public interface ProductMapper {
+    @Mapping(target = "categories", ignore = true)
     ProductCustomerDto toCustomerDto(Product product);
     @Mapping(ignore = true, target = "id")
     @Mapping(ignore = true, target = "categories")

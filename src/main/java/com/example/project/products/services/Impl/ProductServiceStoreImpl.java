@@ -27,7 +27,14 @@ public class ProductServiceStoreImpl implements ProductServiceStore{
     private ProductService productService;
 
     public ProductCustomerDto getProductById(Long id){
-        return repo.findById(id).map(mapper::toCustomerDto).orElseThrow(ProductNotFoundException::new);
+        return repo.findById(id).map((product)->{
+            var res = mapper.toCustomerDto(product);
+            res.setCategories(product.getCategories()
+                                    .stream()
+                                    .map((category)->category.getCategory().getName()) 
+                                    .collect(Collectors.toList()));
+            return res;
+        }).orElseThrow(ProductNotFoundException::new);
     }
 
     @Override
