@@ -7,6 +7,7 @@ import java.util.List;
 import com.example.project.util.entities.Auditor;
 import com.example.project.util.entities.Image;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,7 +49,7 @@ public class Product extends Auditor{
     @Column
     private Boolean isFeatured;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductCategory> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
