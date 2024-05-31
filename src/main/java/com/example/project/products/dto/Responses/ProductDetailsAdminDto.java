@@ -18,11 +18,13 @@ public class ProductDetailsAdminDto {
     private String desc; 
     private Double salePrice; 
     private Long stock;
-    private Boolean isFeatured; 
+    private Boolean isFeatured;
+    private String thumbnailUrl; 
     private String createdBy; 
     private String updatedBy;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
-    private List<SimpleCategoryDto> categoriesInfo; 
+    private List<SimpleCategoryDto> categoriesInfo;
+    private List<String> imagesUrl; 
 
 }

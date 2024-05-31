@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
 import com.example.project.products.dto.Responses.ProductDetailsAdminDto;
+import com.example.project.products.dto.Responses.ProductThumnailDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.entities.Product;
 
@@ -14,10 +15,13 @@ import com.example.project.products.entities.Product;
 @Component
 public interface ProductMapper {
     @Mapping(target = "categories", ignore = true)
+    @Mapping(target = "imagesUrl", ignore = true)
     ProductCustomerDto toCustomerDto(Product product);
     @Mapping(ignore = true, target = "id")
     @Mapping(ignore = true, target = "categories")
     Product toNewProduct(PostNewProductDto dto);
     ProductAdminDto toStaffDto(Product product);
+    @Mapping(target = "imagesUrl", ignore = true)
     ProductDetailsAdminDto toDetailsAdminDto(Product product);
+    ProductThumnailDto toThumnailDto(Product product);
 }

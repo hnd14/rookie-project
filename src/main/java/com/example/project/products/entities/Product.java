@@ -49,7 +49,7 @@ public class Product extends Auditor{
     private Boolean isFeatured;
 
     @Column
-    private String thumbnailURL;
+    private String thumbnailUrl;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductCategory> categories = new ArrayList<>();

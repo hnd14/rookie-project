@@ -31,7 +31,8 @@ public class ProductServiceStoreImpl implements ProductServiceStore{
             res.setCategories(product.getCategories()
                                     .stream()
                                     .map((category)->category.getCategory().getName()) 
-                                    .collect(Collectors.toList()));
+                                    .collect(Collectors.toList()));                    
+            res.setImagesUrl(product.getImages().stream().map((image)->image.getUrl()).collect(Collectors.toList()));                        
             return res;
         }).orElseThrow(ProductNotFoundException::new);
     }

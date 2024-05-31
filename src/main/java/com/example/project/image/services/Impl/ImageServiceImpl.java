@@ -54,7 +54,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             String filecode = UtilFunctions.saveFile(imagePath, fileName, image);
             String fileUrl = filecode + "-" + fileName;
-            product.setThumbnailURL(fileUrl);
+            product.setThumbnailUrl(fileUrl);
             productRepository.save(product);
             return new ImageUploadResponse(fileName, true, fileUrl);
         } catch (Exception e) {

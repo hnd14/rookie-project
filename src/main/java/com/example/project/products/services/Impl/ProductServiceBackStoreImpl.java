@@ -56,6 +56,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         Product product = repo.findById(id).orElseThrow(ProductNotFoundException::new);
         ProductDetailsAdminDto result = mapper.toDetailsAdminDto(product);
         result.setCategoriesInfo(product.getCategories().stream().map(categoryMapper::toSimpleCategoryDto).collect(Collectors.toList()));
+        result.setImagesUrl(product.getImages().stream().map((image)->image.getUrl()).collect(Collectors.toList()));
         return result;
     }
     @Override
