@@ -1,4 +1,4 @@
-package com.example.project.util.entities;
+package com.example.project.util.dto.requests;
 
 import java.util.Optional;
 

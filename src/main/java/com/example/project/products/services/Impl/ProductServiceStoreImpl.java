@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
-import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.mapper.ProductMapper;
 import com.example.project.products.repositories.ProductRepository;
 import com.example.project.products.services.ProductService;
 import com.example.project.products.services.ProductServiceStore;
+import com.example.project.util.dto.response.PagedDto;
 
 @Service
 @Transactional(readOnly = true)

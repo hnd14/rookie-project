@@ -19,7 +19,6 @@ import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.dto.Requests.UpdateProductDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
-import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
 import com.example.project.products.dto.Responses.ProductDetailsAdminDto;
 import com.example.project.products.services.CategoryServiceBackStore;
@@ -27,7 +26,8 @@ import com.example.project.products.services.ProductServiceBackStore;
 import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.services.UserService;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
+import com.example.project.util.dto.response.PagedDto;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

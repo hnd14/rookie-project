@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.CategoryDto;
-import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
 import com.example.project.products.services.CategoryServiceStore;
 import com.example.project.products.services.ProductServiceStore;
@@ -33,7 +32,8 @@ import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.services.UserService;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
+import com.example.project.util.dto.response.PagedDto;
 
 
 @RestController

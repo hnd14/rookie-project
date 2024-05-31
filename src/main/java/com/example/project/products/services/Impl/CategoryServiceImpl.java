@@ -14,7 +14,7 @@ import com.example.project.products.entities.Category;
 import com.example.project.products.exceptions.CategoryNotFoundException;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
 
 @Service
 @Transactional(readOnly = true)

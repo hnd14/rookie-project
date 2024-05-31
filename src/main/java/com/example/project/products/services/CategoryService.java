@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.example.project.products.entities.Category;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
 
 @Service
 public interface CategoryService {

@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
 import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.dto.Responses.CategoryAdminDto;
-import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.entities.Category;
 import com.example.project.products.exceptions.CategoryNotFoundException;
 import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceBackStore;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
+import com.example.project.util.dto.response.PagedDto;
 import com.example.project.util.exceptions.DuplicatedResourceException;
 
 import jakarta.validation.Valid;

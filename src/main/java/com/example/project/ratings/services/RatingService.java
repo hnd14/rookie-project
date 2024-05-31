@@ -7,7 +7,7 @@ import com.example.project.ratings.dto.requests.PostNewRatingDto;
 import com.example.project.ratings.dto.responses.AverageRatingDto;
 import com.example.project.ratings.dto.responses.NewRatingPostedDto;
 import com.example.project.ratings.dto.responses.RatingDetailsDto;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
 
 public interface RatingService {
     NewRatingPostedDto postNewRating(Long productId, PostNewRatingDto dto);

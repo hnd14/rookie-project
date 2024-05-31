@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import com.example.project.util.dto.ErrorDto;
+import com.example.project.util.dto.response.ErrorDto;
 import com.example.project.util.exceptions.DuplicatedResourceException;
 import com.example.project.util.exceptions.NotFoundException;
 

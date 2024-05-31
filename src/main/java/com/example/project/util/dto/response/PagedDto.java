@@ -1,4 +1,4 @@
-package com.example.project.products.dto.Responses;
+package com.example.project.util.dto.response;
 
 import java.util.List;
 

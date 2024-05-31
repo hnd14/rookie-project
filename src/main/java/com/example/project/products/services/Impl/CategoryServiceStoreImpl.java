@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Responses.CategoryDto;
-import com.example.project.products.dto.Responses.PagedDto;
 import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.services.CategoryService;
 import com.example.project.products.services.CategoryServiceStore;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
+import com.example.project.util.dto.response.PagedDto;
 
 @Service
 @Transactional(readOnly = true)

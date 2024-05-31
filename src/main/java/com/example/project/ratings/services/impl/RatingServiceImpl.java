@@ -25,7 +25,7 @@ import com.example.project.ratings.repositories.RatingRepository;
 import com.example.project.ratings.services.RatingService;
 import com.example.project.users.entities.User;
 import com.example.project.users.repositories.UserRepository;
-import com.example.project.util.entities.PagingDto;
+import com.example.project.util.dto.requests.PagingDto;
 import com.example.project.util.exceptions.NotFoundException;
 
 @Service
