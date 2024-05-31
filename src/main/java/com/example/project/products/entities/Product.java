@@ -3,9 +3,8 @@ package com.example.project.products.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import com.example.project.image.entities.Image;
 import com.example.project.util.entities.Auditor;
-import com.example.project.util.entities.Image;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
