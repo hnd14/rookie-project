@@ -30,4 +30,12 @@ public class ImageController {
         var response = imageService.uploadImages(multipartFiles, productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/thumbnails/upload")
+    ResponseEntity<ImageUploadResponse> uploadThumnail(
+            @RequestParam("file") MultipartFile multipartFile, @RequestParam("productId") Long productId)
+                    throws IOException {
+        var response = imageService.uploadThumbnail(multipartFile, productId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }   

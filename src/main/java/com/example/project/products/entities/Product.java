@@ -48,6 +48,9 @@ public class Product extends Auditor{
     @Column
     private Boolean isFeatured;
 
+    @Column
+    private String thumbnailURL;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductCategory> categories = new ArrayList<>();
 

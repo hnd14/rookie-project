@@ -45,4 +45,21 @@ public class ImageServiceImpl implements ImageService {
         }).collect(Collectors.toList());
         return response;
     }
+
+    @Transactional
+    @Override
+    public ImageUploadResponse uploadThumbnail(MultipartFile image, Long productId){
+        var product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
+        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+        try {
+            String filecode = UtilFunctions.saveFile(imagePath, fileName, image);
+            String fileUrl = filecode + "-" + fileName;
+            product.setThumbnailURL(fileUrl);
+            productRepository.save(product);
+            return new ImageUploadResponse(fileName, true, fileUrl);
+        } catch (Exception e) {
+            return new ImageUploadResponse(fileName, false, null);
+        }
+           
+        }
 }
