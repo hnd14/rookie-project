@@ -1,6 +1,7 @@
 package com.example.project.image.services.Impl;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,30 +26,30 @@ public class ImageServiceImpl implements ImageService {
     private ImageRepository repository;
     @Autowired
     private ProductRepository productRepository;
-    private String imagePath ="C:/Users/dnhoa/Image/";
+    private String imagePath = "C:/Users/dnhoa/Image/";
 
     @Transactional
     @Override
-    public List<ImageUploadResponse> uploadImages(MultipartFile[] images, Long productId){
+    public List<ImageUploadResponse> uploadImages(MultipartFile[] images, Long productId) {
         var product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
-        var response = Arrays.asList(images).stream().map((multipartFile)->{
+        var response = Arrays.asList(images).stream().map((multipartFile) -> {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             try {
                 String filecode = UtilFunctions.saveFile(imagePath, fileName, multipartFile);
                 String fileUrl = filecode + "-" + fileName;
                 Image thisImage = new Image(fileUrl, product);
-                repository.save(thisImage);    
+                repository.save(thisImage);
                 return new ImageUploadResponse(fileName, true, fileUrl);
             } catch (Exception e) {
                 return new ImageUploadResponse(fileName, false, null);
-            }              
+            }
         }).collect(Collectors.toList());
         return response;
     }
 
     @Transactional
     @Override
-    public ImageUploadResponse uploadThumbnail(MultipartFile image, Long productId){
+    public ImageUploadResponse uploadThumbnail(MultipartFile image, Long productId) {
         var product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         try {
@@ -60,6 +61,37 @@ public class ImageServiceImpl implements ImageService {
         } catch (Exception e) {
             return new ImageUploadResponse(fileName, false, null);
         }
-           
+
+    }
+
+    @Transactional
+    @Override
+    public List<ImageUploadResponse> uploadThumbnailAndImages(MultipartFile[] images, MultipartFile thumbnail,
+            Long productId) {
+        var product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
+        String name = StringUtils.cleanPath(thumbnail.getOriginalFilename());
+        List<ImageUploadResponse> res = new LinkedList<>();
+        try {
+            String filecode = UtilFunctions.saveFile(imagePath, name, thumbnail);
+            String fileUrl = filecode + "-" + name;
+            product.setThumbnailUrl(fileUrl);
+            productRepository.save(product);
+            res.add(new ImageUploadResponse(name, true, fileUrl)) ;
+        } catch (Exception e) {
+            res.add(new ImageUploadResponse(name, false, null));
         }
+        Arrays.asList(images).stream().forEach((multipartFile) -> {
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            try {
+                String filecode = UtilFunctions.saveFile(imagePath, fileName, multipartFile);
+                String fileUrl = filecode + "-" + fileName;
+                Image thisImage = new Image(fileUrl, product);
+                repository.save(thisImage);
+                res.add(new ImageUploadResponse(fileName, true, fileUrl));
+            } catch (Exception e) {
+                res.add(new ImageUploadResponse(fileName, false, null));
+            }
+        });
+        return res;
+    }
 }

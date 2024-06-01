@@ -38,4 +38,14 @@ public class ImageController {
         var response = imageService.uploadThumbnail(multipartFile, productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/all/upload")
+    ResponseEntity<List<ImageUploadResponse>> uploadThumbnailAndImages(
+            @RequestParam("file") MultipartFile[] multipartFiles,
+            @RequestParam("thumbnail") MultipartFile thumbnail,
+            @RequestParam("productId") Long productId)
+                    throws IOException {
+        var response = imageService.uploadThumbnailAndImages(multipartFiles, thumbnail, productId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }   
