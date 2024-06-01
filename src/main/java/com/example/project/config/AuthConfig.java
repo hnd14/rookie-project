@@ -34,7 +34,7 @@ public class AuthConfig {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+        return authProvider;    
     }
 
     @Bean
@@ -51,6 +51,7 @@ public class AuthConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.GET, "/store/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/auth/sign-in").permitAll()
             .requestMatchers(HttpMethod.GET,"/auth/verify").permitAll()
             .requestMatchers(HttpMethod.POST,"/store/sign-up").permitAll()
