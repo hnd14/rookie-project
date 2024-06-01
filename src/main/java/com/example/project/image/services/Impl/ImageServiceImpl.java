@@ -36,10 +36,9 @@ public class ImageServiceImpl implements ImageService {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             try {
                 String filecode = UtilFunctions.saveFile(imagePath, fileName, multipartFile);
-                String fileUrl = filecode + "-" + fileName;
-                Image thisImage = new Image(fileUrl, product);
+                Image thisImage = new Image(filecode, product);
                 repository.save(thisImage);
-                return new ImageUploadResponse(fileName, true, fileUrl);
+                return new ImageUploadResponse(fileName, true, filecode);
             } catch (Exception e) {
                 return new ImageUploadResponse(fileName, false, null);
             }
@@ -54,10 +53,9 @@ public class ImageServiceImpl implements ImageService {
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         try {
             String filecode = UtilFunctions.saveFile(imagePath, fileName, image);
-            String fileUrl = filecode + "-" + fileName;
-            product.setThumbnailUrl(fileUrl);
+            product.setThumbnailUrl(filecode);
             productRepository.save(product);
-            return new ImageUploadResponse(fileName, true, fileUrl);
+            return new ImageUploadResponse(fileName, true, filecode);
         } catch (Exception e) {
             return new ImageUploadResponse(fileName, false, null);
         }
@@ -66,28 +64,40 @@ public class ImageServiceImpl implements ImageService {
 
     @Transactional
     @Override
-    public List<ImageUploadResponse> uploadThumbnailAndImages(MultipartFile[] images, MultipartFile thumbnail,
-            Long productId) {
+    public List<ImageUploadResponse> updateImagesData(MultipartFile[] images, MultipartFile thumbnail,
+            Long productId, String deleteImages) {
         var product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
-        String name = StringUtils.cleanPath(thumbnail.getOriginalFilename());
         List<ImageUploadResponse> res = new LinkedList<>();
-        try {
-            String filecode = UtilFunctions.saveFile(imagePath, name, thumbnail);
-            String fileUrl = filecode + "-" + name;
-            product.setThumbnailUrl(fileUrl);
-            productRepository.save(product);
-            res.add(new ImageUploadResponse(name, true, fileUrl)) ;
-        } catch (Exception e) {
-            res.add(new ImageUploadResponse(name, false, null));
+        if(!thumbnail.isEmpty()){
+            String name = StringUtils.cleanPath(thumbnail.getOriginalFilename());
+            try {
+                String filecode = UtilFunctions.saveFile(imagePath, name, thumbnail);
+                product.setThumbnailUrl(filecode);
+                productRepository.save(product);
+                res.add(new ImageUploadResponse(name, true, filecode)) ;
+            } catch (Exception e) {
+                res.add(new ImageUploadResponse(name, false, null));
+            }
         }
+
+        List<String> deleteImagesId = Arrays.asList(deleteImages.split(" ")); 
+        deleteImagesId.stream().forEach((url)->{
+            try{repository.deleteById(url);
+                UtilFunctions.deleteFile(imagePath, url);
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            
+        });
+
         Arrays.asList(images).stream().forEach((multipartFile) -> {
+            if (multipartFile.isEmpty()) return;
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             try {
                 String filecode = UtilFunctions.saveFile(imagePath, fileName, multipartFile);
-                String fileUrl = filecode + "-" + fileName;
-                Image thisImage = new Image(fileUrl, product);
+                Image thisImage = new Image(filecode, product);
                 repository.save(thisImage);
-                res.add(new ImageUploadResponse(fileName, true, fileUrl));
+                res.add(new ImageUploadResponse(fileName, true, filecode));
             } catch (Exception e) {
                 res.add(new ImageUploadResponse(fileName, false, null));
             }

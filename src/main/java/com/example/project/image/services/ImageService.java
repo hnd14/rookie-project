@@ -10,6 +10,6 @@ public interface ImageService {
 
     List<ImageUploadResponse> uploadImages(MultipartFile[] images, Long productId);
     ImageUploadResponse uploadThumbnail(MultipartFile image, Long productId);
-    List<ImageUploadResponse> uploadThumbnailAndImages(MultipartFile[] images, MultipartFile thumbnail, Long productId);
+    List<ImageUploadResponse> updateImagesData(MultipartFile[] images, MultipartFile thumbnail, Long productId, String deleteImages);
 
 }

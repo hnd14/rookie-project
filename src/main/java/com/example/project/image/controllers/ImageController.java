@@ -43,9 +43,10 @@ public class ImageController {
     ResponseEntity<List<ImageUploadResponse>> uploadThumbnailAndImages(
             @RequestParam("file") MultipartFile[] multipartFiles,
             @RequestParam("thumbnail") MultipartFile thumbnail,
-            @RequestParam("productId") Long productId)
+            @RequestParam("productId") Long productId,
+            @RequestParam("deleteImages") String deleteImage)
                     throws IOException {
-        var response = imageService.uploadThumbnailAndImages(multipartFiles, thumbnail, productId);
+        var response = imageService.updateImagesData(multipartFiles, thumbnail, productId, deleteImage);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }   
