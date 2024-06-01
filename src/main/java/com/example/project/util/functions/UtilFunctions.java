@@ -14,14 +14,24 @@ public class UtilFunctions {
         var uploadPath = Paths.get(path);
  
         String fileCode = UUID.randomUUID().toString();
+        String extension = fileName.substring(fileName.lastIndexOf("."));
          
         try (var inputStream = multipartFile.getInputStream()) {
-            var filePath = uploadPath.resolve(fileCode + "-" + fileName);
+            var filePath = uploadPath.resolve(fileCode + extension);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ioe) {       
             throw new IOException("Could not save file: " + fileName, ioe);
         }
          
-        return fileCode;
+        return fileCode + extension;
+    }
+
+    public static void deleteFile(String path, String name) throws IOException{
+        var filePath = Paths.get(path,name);
+        try {
+            Files.delete(filePath);  
+        } catch (IOException e) {
+            throw new IOException("Could not delete file: " + filePath.toString(), e);
+        }
     }
 }
