@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +23,7 @@ public class ImageController {
     private ImageService imageService;
 
 
-	@PostMapping("/upload")
+	//@PostMapping("/upload")
 	ResponseEntity<List<ImageUploadResponse>> uploadFile(
             @RequestParam("file") MultipartFile[] multipartFiles, @RequestParam("productId") Long productId)
                     throws IOException {
@@ -31,7 +31,7 @@ public class ImageController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/thumbnails/upload")
+    //@PostMapping("/thumbnails/upload")
     ResponseEntity<ImageUploadResponse> uploadThumnail(
             @RequestParam("file") MultipartFile multipartFile, @RequestParam("productId") Long productId)
                     throws IOException {
@@ -39,7 +39,7 @@ public class ImageController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/all/upload")
+    @PutMapping("/")
     ResponseEntity<List<ImageUploadResponse>> uploadThumbnailAndImages(
             @RequestParam("file") MultipartFile[] multipartFiles,
             @RequestParam("thumbnail") MultipartFile thumbnail,
