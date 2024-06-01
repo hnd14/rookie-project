@@ -56,6 +56,7 @@ public class RatingServiceImpl implements RatingService {
         newRating.setProduct(productRepository.findById(productId).orElseThrow(ProductNotFoundException::new));
         User user =userRepository.findOneByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Username not found"));
         newRating.setUser(user);
+        newRating.setId(productId.toString()+"_"+user.getUsername().toString());
         ratingRepository.save(newRating);
         return new NewRatingPostedDto(newRating.getId());
     }
@@ -83,8 +84,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Transactional
     @Override
-    public RatingDetailsDto editRating(Long ratingId, EditRatingDto dto){
-        Rating rating = ratingRepository.findById(ratingId).orElseThrow(NotFoundException::new);
+    public RatingDetailsDto editRating(String productId, EditRatingDto dto){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null 
             || !authentication.isAuthenticated()
@@ -92,18 +92,17 @@ public class RatingServiceImpl implements RatingService {
             throw new SecurityException("You need to log in to edit a rating");
         }
         var username = authentication.getPrincipal().toString();
-        if (!username.equals(rating.getUser().getUsername())){
-            throw new SecurityException("You are not allowed to edit this rating");
-        }
+        Rating rating = ratingRepository.findById(productId+"_"+username).orElse(new Rating());
         rating.setScores(dto.scores().orElse(rating.getScores())); 
-        rating.setComment(dto.comment().orElse(rating.getComment()));;
+        rating.setComment(dto.comment().orElse(rating.getComment()));
+        rating.setId(productId+"_"+username);
         ratingRepository.save(rating);
         return new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(), rating.getScores(), rating.getComment());
     }
 
     @Override
-    public void deleteRating(Long ratingId) {
-        Rating rating = ratingRepository.findById(ratingId).orElseThrow(NotFoundException::new);
+    public void deleteRating(String productId) {
+        
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null 
             || !authentication.isAuthenticated()
@@ -111,9 +110,7 @@ public class RatingServiceImpl implements RatingService {
             throw new SecurityException("You need to log in to delete a rating");
         }
         var username = authentication.getPrincipal().toString();
-        if (!username.equals(rating.getUser().getUsername())){
-            throw new SecurityException("You are not allowed to delete this rating");
-        }
+        Rating rating = ratingRepository.findById(productId+"_"+username).orElseThrow(NotFoundException::new);
         ratingRepository.delete(rating);
     }
 

@@ -96,13 +96,13 @@ public class StoreFrontController extends V1Rest {
         return ratingService.getAllRatingsFor(id, pagingDto);
     }
 
-    @PutMapping("/ratings/{id}")
-    public RatingDetailsDto editRating(@PathVariable Long id, @RequestBody EditRatingDto dto){
+    @PutMapping("/products/{id}/ratings")
+    public RatingDetailsDto editRating(@PathVariable(name = "id") String id, @RequestBody EditRatingDto dto){
         return ratingService.editRating(id,dto);
     }
 
-    @DeleteMapping("/ratings/{id}")
-    public void deleteRating(@PathVariable Long id){
+    @DeleteMapping("/products/{id}/ratings")
+    public void deleteRating(@PathVariable(name = "id") String id){
         ratingService.deleteRating(id);
     }
 

@@ -13,6 +13,6 @@ public interface RatingService {
     NewRatingPostedDto postNewRating(Long productId, PostNewRatingDto dto);
     AverageRatingDto getAvgRating(Long productId);
     List<RatingDetailsDto> getAllRatingsFor(Long productId, PagingDto dto);
-    RatingDetailsDto editRating(Long ratingId, EditRatingDto dto);
-    void deleteRating(Long ratingId);
+    RatingDetailsDto editRating(String productId, EditRatingDto dto);
+    void deleteRating(String productId);
 }

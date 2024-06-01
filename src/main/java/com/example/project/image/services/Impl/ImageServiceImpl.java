@@ -85,7 +85,7 @@ public class ImageServiceImpl implements ImageService {
             try{repository.deleteById(url);
                 UtilFunctions.deleteFile(imagePath, url);
             }catch(Exception e){
-                System.out.println(e.getMessage());
+                
             }
             
         });
