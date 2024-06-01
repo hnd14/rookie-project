@@ -33,6 +33,7 @@ public class InitUserLoader implements CommandLineRunner{
         roleRepository.save(roleCustomer);
         // Init admin user 
         User admin = new User();
+        admin.setId(Long.valueOf(1));
         admin.setUsername("admin");
         admin.setPassword(passwordEncoder.encode("admin"));
         Set<Role> adminRoles = new HashSet<>();
