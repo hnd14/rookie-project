@@ -54,6 +54,6 @@ public class Product extends Auditor{
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductCategory> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Image> images;
 }   

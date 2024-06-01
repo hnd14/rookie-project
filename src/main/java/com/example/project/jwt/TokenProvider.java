@@ -43,6 +43,6 @@ public class TokenProvider {
     }
 
     private Instant generateExpireDate(){
-        return Instant.now().plusSeconds(2*3600);
+        return Instant.now().plusSeconds(24*3600);
     }
 }
