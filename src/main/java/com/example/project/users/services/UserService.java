@@ -8,7 +8,10 @@ import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.LoginResponseDto;
+import com.example.project.users.dto.responses.UserAdminDto;
 import com.example.project.users.dto.responses.UserReturnDto;
+import com.example.project.util.dto.requests.PagingDto;
+import com.example.project.util.dto.response.PagedDto;
 
 public interface UserService extends UserDetailsService{
 
@@ -25,5 +28,7 @@ public interface UserService extends UserDetailsService{
     LoginResponseDto signIn(SignInDto dto);
 
     LoginResponseDto verify();
+
+    PagedDto<UserAdminDto> getUsersLists(PagingDto dto);
 
 }
