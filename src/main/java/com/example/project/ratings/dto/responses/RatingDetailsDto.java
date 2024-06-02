@@ -1,5 +1,5 @@
 package com.example.project.ratings.dto.responses;
 
-public record RatingDetailsDto(String id, String username, Integer scores, String comment) {
+public record RatingDetailsDto(String id, String username, String productId, Integer scores, String comment) {
 
 }

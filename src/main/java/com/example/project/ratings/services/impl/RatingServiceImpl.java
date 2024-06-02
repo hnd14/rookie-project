@@ -81,7 +81,7 @@ public class RatingServiceImpl implements RatingService {
         var content = ratingRepository.findByProduct(productId, page);
         return new PagedDto<>(
                 content.getContent().stream()
-                        .map(rating -> new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(),
+                        .map(rating -> new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(), productId.toString(),
                                 rating.getScores(), rating.getComment()))
                         .collect(Collectors.toList()),
                 content.getTotalPages(),
@@ -108,7 +108,7 @@ public class RatingServiceImpl implements RatingService {
         rating.setUser(user);
         rating.setId(productId + "_" + username);
         ratingRepository.save(rating);
-        return new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(), rating.getScores(),
+        return new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(), productId, rating.getScores(),
                 rating.getComment());
     }
 
@@ -137,7 +137,7 @@ public class RatingServiceImpl implements RatingService {
         var username = authentication.getPrincipal().toString();
         var ratingId = productId + "_" + username;
         Rating myRating = ratingRepository.findById(ratingId).orElse(new Rating(ratingId, 0, "", null, null));
-        return new RatingDetailsDto(ratingId, username, myRating.getScores(), myRating.getComment());
+        return new RatingDetailsDto(ratingId, username, productId, myRating.getScores(), myRating.getComment());
     }
 
 }
