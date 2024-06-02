@@ -17,6 +17,7 @@ public class ProductCustomerDto {
     private String desc;
     private Double salePrice; 
     private String thumbnailUrl;
+    private Double averageScore;
     private List<String> categories;
     private List<String> imagesUrl;
 }
