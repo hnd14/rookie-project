@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService{
 
         static Specification<Product> priceBetween(Optional<Double> minPrice, Optional<Double> maxPrice){
             return (root,query,cb) -> {
-                var minPricePredicate = minPrice.isPresent()?cb.conjunction():cb.greaterThan(root.get("salePrice"), minPrice.get());
+                var minPricePredicate = minPrice.isEmpty()?cb.conjunction():cb.greaterThan(root.get("salePrice"), minPrice.get());
                 var maxPricePredicate = maxPrice.isEmpty()?cb.conjunction():cb.lessThan(root.get("salePrice"), maxPrice.get());
                 return cb.and(maxPricePredicate,minPricePredicate);
             };
