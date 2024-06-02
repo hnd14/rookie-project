@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.CategoryDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
+import com.example.project.products.dto.Responses.ProductThumnailDto;
 import com.example.project.products.services.CategoryServiceStore;
 import com.example.project.products.services.ProductServiceStore;
 import com.example.project.ratings.dto.requests.EditRatingDto;
@@ -52,7 +53,7 @@ public class StoreFrontController extends V1Rest {
 
     @GetMapping("/products")
     @ResponseBody
-    PagedDto<ProductCustomerDto> findProductsWithFilter(ProductSearchDto dto){
+    PagedDto<ProductThumnailDto> findProductsWithFilter(ProductSearchDto dto){
         return productService.findProductWithFilter(dto);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductCustomerDto;
+import com.example.project.products.dto.Responses.ProductThumnailDto;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.mapper.ProductMapper;
 import com.example.project.products.repositories.ProductRepository;
@@ -38,9 +39,9 @@ public class ProductServiceStoreImpl implements ProductServiceStore{
     }
 
     @Override
-    public PagedDto<ProductCustomerDto> findProductWithFilter(ProductSearchDto dto) {
+    public PagedDto<ProductThumnailDto> findProductWithFilter(ProductSearchDto dto) {
         var content = productService.findProductWithFilter(dto);
-        return new PagedDto<>(content.getContent().stream().map(mapper::toCustomerDto).collect(Collectors.toList()),
+        return new PagedDto<>(content.getContent().stream().map(mapper::toThumnailDto).collect(Collectors.toList()),
         content.getTotalPages(), 
         content.getNumber());
     }
