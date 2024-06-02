@@ -1,6 +1,8 @@
 package com.example.project.products.services.Impl;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,22 +42,22 @@ public class ProductServiceImpl implements ProductService{
             return (root,query,cb)->cb.like(cb.lower(root.get("name")), "%"+productName.toLowerCase()+"%");
         }
 
-        static Specification<Product> priceBetween(Double minPrice, Double maxPrice){
+        static Specification<Product> priceBetween(Optional<Double> minPrice, Optional<Double> maxPrice){
             return (root,query,cb) -> {
-                var minPricePredicate = minPrice == null?cb.conjunction():cb.greaterThan(root.get("salePrice"), minPrice);
-                var maxPricePredicate = maxPrice == null?cb.conjunction():cb.lessThan(root.get("salePrice"), maxPrice);
+                var minPricePredicate = minPrice.isPresent()?cb.conjunction():cb.greaterThan(root.get("salePrice"), minPrice.get());
+                var maxPricePredicate = maxPrice.isEmpty()?cb.conjunction():cb.lessThan(root.get("salePrice"), maxPrice.get());
                 return cb.and(maxPricePredicate,minPricePredicate);
             };
         }
 
-        static Specification<Product> hasCategory(Long categoryId){
-            if (categoryId == null){
+        static Specification<Product> hasCategory(Optional<Long> categoryId){
+            if (categoryId.isEmpty()){
                 return (root,query, cb) -> cb.conjunction();
             }
             return (root, query, cb) ->{
                 var productCategory = root.join("categories",JoinType.INNER);
                 return categoryId == null?cb.conjunction()
-                :cb.equal(productCategory.get("category").get("id"), categoryId);
+                :cb.equal(productCategory.get("category").get("id"), categoryId.get());
             };
         }
 
@@ -67,10 +69,10 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Page<Product> findProductWithFilter(ProductSearchDto dto) {
-        String productName = dto.name() == null?"":dto.name();
-        Double minPrice = dto.minPrice();
-        Double maxPrice = dto.maxPrice();   
-        Long categoryId = dto.categoriesId();
+        String productName = dto.name().orElse("");
+        Optional<Double> minPrice = dto.minPrice();
+        Optional<Double> maxPrice = dto.maxPrice();   
+        Optional<Long> categoryId = dto.categoriesId();
         Boolean isFeatured = dto.isFeatured().orElse(false);
         
         var sortBy = dto.sortBy().orElse(DEFAULT_SORT_BY);
