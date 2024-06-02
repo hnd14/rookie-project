@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
 
 import com.example.project.products.dto.Requests.PostNewCategoryDto;
+import com.example.project.products.dto.Requests.UpdateCategoryDto;
 import com.example.project.products.mapper.CategoryMapper;
 import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.util.dto.requests.PagingDto;
@@ -193,7 +194,30 @@ public class CategoryServiceBackStoreImplTest {
     }
 
     @Test
-    void testUpdate() {
+    void testUpdate_success() {
+        // set up
+        var cate = repo.findAll().getFirst();
+        var cateId = cate.getId();
+        var newDesc = "Descriptions...";
+        var updateDto = new UpdateCategoryDto(newDesc);
+        // run
+        var ret = service.update(cateId, updateDto);
+        var res = repo.findById(cateId).orElseThrow();
+        // assert
+        assertThat(res).hasFieldOrPropertyWithValue("desc", newDesc);
+        assertThat(ret).isEqualTo(mapper.toAdminDto(res));
+    }
 
+    @Test
+    void testUpdate_whenGivenWrongId_shouldThrow() {
+        // set up
+        var cate = repo.findAll().getFirst();
+        var cateId = cate.getId() - 5;
+        var newDesc = "Descriptions...";
+        var updateDto = new UpdateCategoryDto(newDesc);
+        // run
+        assertThrows(CategoryNotFoundException.class, ()->{
+            service.update(cateId, updateDto);
+        });
     }
 }
