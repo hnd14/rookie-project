@@ -181,7 +181,7 @@ public class ProductServiceBackStoreImplTest {
     }
 
     @Test
-    void testUpdate() {
+    void testUpdate_whenGivenCorrectId_shouldUpdate() {
         // set up
         var updatedDesc = "desc";
         var updatedStock = Long.valueOf(15);
@@ -199,6 +199,21 @@ public class ProductServiceBackStoreImplTest {
                 .hasFieldOrPropertyWithValue("desc", updatedDesc)
                 .hasFieldOrPropertyWithValue("salePrice", updatedPrice)
                 .hasFieldOrPropertyWithValue("isFeatured", updatedIsFeatured);
-        verify(mockProductRepository, times(1)).deleteById((long) 20);
+        verify(mockProductRepository, times(1)).save(any());
+    }
+
+    void testUpdate_whenGivenWrongId_shouldThrow() {
+        // set up
+        var updatedDesc = "desc";
+        var updatedStock = Long.valueOf(15);
+        var updatedPrice = 100.0;
+        var updatedIsFeatured = true;
+        var updateCategoriesId = new ArrayList<Long>();
+        var updateDto = new UpdateProductDto(updatedDesc, updatedStock, updatedPrice, updateCategoriesId,
+                updatedIsFeatured);
+        // assert and run
+        assertThrows(ProductNotFoundException.class, () -> {
+            service.updateProduct(Long.valueOf(15), updateDto);
+        });
     }
 }
