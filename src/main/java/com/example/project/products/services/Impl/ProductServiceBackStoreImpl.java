@@ -81,6 +81,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
             productCategoryRepository.delete(categories);
         });
         addCategoriesToProduct(productToUpdate, dto.categoriesId());
+        repo.save(productToUpdate);
         return mapper.toStaffDto(productToUpdate);
     }
 
