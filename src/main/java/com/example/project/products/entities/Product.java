@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.project.image.entities.Image;
+import com.example.project.ratings.entities.Rating;
 import com.example.project.util.entities.Auditor;
 
 import jakarta.persistence.CascadeType;
@@ -56,4 +57,7 @@ public class Product extends Auditor {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Image> images;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Rating> ratings;
 }
