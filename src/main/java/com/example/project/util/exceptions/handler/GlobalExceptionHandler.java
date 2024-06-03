@@ -18,12 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
     private static final String ERROR_LOG_FORMAT = "Error: URI: {}, ErrorCode: {}, Message: {}";
 
-    private String getRequestPath(WebRequest req){
+    private String getRequestPath(WebRequest req) {
         ServletWebRequest servletWebRequest = (ServletWebRequest) req;
         return servletWebRequest.getRequest().getServletPath();
     }
+
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorDto> handleNotFoundException(NotFoundException ex, WebRequest req){
+    public ResponseEntity<ErrorDto> handleNotFoundException(NotFoundException ex, WebRequest req) {
         String message = ex.getMessage();
         log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 404, message);
         ErrorDto dto = new ErrorDto("404", HttpStatus.NOT_FOUND.toString(), message, null);
@@ -31,10 +32,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DuplicatedResourceException.class)
-    public ResponseEntity<ErrorDto> handleDuplicatedResourceException(DuplicatedResourceException ex, WebRequest req){
+    public ResponseEntity<ErrorDto> handleDuplicatedResourceException(DuplicatedResourceException ex, WebRequest req) {
         String message = "Resource you are trying to create already existed.";
         log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 400, message);
         ErrorDto dto = new ErrorDto("400", HttpStatus.BAD_REQUEST.toString(), message, null);
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
-}   
+}

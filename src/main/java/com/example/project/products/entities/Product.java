@@ -21,13 +21,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="products")
+@Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class Product extends Auditor{
+public class Product extends Auditor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -56,4 +56,4 @@ public class Product extends Auditor{
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Image> images;
-}   
+}

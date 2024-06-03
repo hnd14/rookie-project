@@ -15,7 +15,7 @@ public class ProductCustomerDto {
     private Long id;
     private String name;
     private String desc;
-    private Double salePrice; 
+    private Double salePrice;
     private String thumbnailUrl;
     private Double averageScore;
     private List<String> categories;

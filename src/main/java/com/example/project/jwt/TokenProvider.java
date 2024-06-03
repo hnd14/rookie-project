@@ -15,34 +15,33 @@ import com.example.project.users.entities.User;
 public class TokenProvider {
     private final Algorithm algorithm;
 
-    public TokenProvider (@Value("${security.jwt.token.secret-key}") String jwtSecret) {
+    public TokenProvider(@Value("${security.jwt.token.secret-key}") String jwtSecret) {
         this.algorithm = Algorithm.HMAC256(jwtSecret);
     }
 
-    public String generateAccessToken(User user){
-        try{
+    public String generateAccessToken(User user) {
+        try {
             return JWT.create()
-            .withClaim("sub", user.getUsername())
-            .withExpiresAt(generateExpireDate())
-            .sign(algorithm);
+                    .withClaim("sub", user.getUsername())
+                    .withExpiresAt(generateExpireDate())
+                    .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new JWTCreationException("Error while generating token", exception);
         }
     }
 
-    public String validateToken(String token){
-        try{
+    public String validateToken(String token) {
+        try {
             return JWT.require(algorithm)
-            .build()
-            .verify(token)
-            .getSubject();
-        }
-        catch (JWTVerificationException exception) {
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (JWTVerificationException exception) {
             throw new JWTVerificationException("Error while validating token", exception);
         }
     }
 
-    private Instant generateExpireDate(){
-        return Instant.now().plusSeconds(24*3600);
+    private Instant generateExpireDate() {
+        return Instant.now().plusSeconds(24 * 3600);
     }
 }

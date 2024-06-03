@@ -18,12 +18,16 @@ public interface ProductMapper {
     @Mapping(target = "imagesUrl", ignore = true)
     @Mapping(target = "averageScore", ignore = true)
     ProductCustomerDto toCustomerDto(Product product);
+
     @Mapping(ignore = true, target = "id")
     @Mapping(ignore = true, target = "categories")
     Product toNewProduct(PostNewProductDto dto);
+
     ProductAdminDto toStaffDto(Product product);
+
     @Mapping(target = "imagesUrl", ignore = true)
     @Mapping(target = "categoriesInfo", ignore = true)
     ProductDetailsAdminDto toDetailsAdminDto(Product product);
+
     ProductThumnailDto toThumnailDto(Product product);
 }

@@ -12,9 +12,12 @@ import com.example.project.util.dto.response.PagedDto;
 @Service
 public interface ProductServiceBackStore {
     ProductAdminDto createNewProduct(PostNewProductDto dto);
+
     ProductDetailsAdminDto getProductById(Long id);
+
     ProductAdminDto updateProduct(Long id, UpdateProductDto dto);
+
     PagedDto<ProductAdminDto> findProductWithFilter(ProductSearchDto dto);
+
     void deleteProduct(Long id);
 }
-

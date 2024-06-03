@@ -81,7 +81,8 @@ public class RatingServiceImpl implements RatingService {
         var content = ratingRepository.findByProduct(productId, page);
         return new PagedDto<>(
                 content.getContent().stream()
-                        .map(rating -> new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(), productId.toString(),
+                        .map(rating -> new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(),
+                                productId.toString(),
                                 rating.getScores(), rating.getComment()))
                         .collect(Collectors.toList()),
                 content.getTotalPages(),

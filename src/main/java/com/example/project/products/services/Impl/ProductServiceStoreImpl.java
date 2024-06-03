@@ -19,25 +19,25 @@ import com.example.project.util.dto.response.PagedDto;
 
 @Service
 @Transactional(readOnly = true)
-public class ProductServiceStoreImpl implements ProductServiceStore{
+public class ProductServiceStoreImpl implements ProductServiceStore {
     @Autowired
     private ProductRepository repo;
     @Autowired
     private ProductMapper mapper;
     @Autowired
     private ProductService productService;
-    @Autowired 
+    @Autowired
     private RatingRepository ratingRepository;
 
-    public ProductCustomerDto getProductById(Long id){
-        return repo.findById(id).map((product)->{
+    public ProductCustomerDto getProductById(Long id) {
+        return repo.findById(id).map((product) -> {
             var res = mapper.toCustomerDto(product);
             res.setCategories(product.getCategories()
-                                    .stream()
-                                    .map((category)->category.getCategory().getName()) 
-                                    .collect(Collectors.toList()));                    
-            res.setImagesUrl(product.getImages().stream().map((image)->image.getUrl()).collect(Collectors.toList()));      
-            res.setAverageScore(ratingRepository.findAverageRatingForProduct(id));              
+                    .stream()
+                    .map((category) -> category.getCategory().getName())
+                    .collect(Collectors.toList()));
+            res.setImagesUrl(product.getImages().stream().map((image) -> image.getUrl()).collect(Collectors.toList()));
+            res.setAverageScore(ratingRepository.findAverageRatingForProduct(id));
             return res;
         }).orElseThrow(ProductNotFoundException::new);
     }
@@ -46,9 +46,8 @@ public class ProductServiceStoreImpl implements ProductServiceStore{
     public PagedDto<ProductThumnailDto> findProductWithFilter(ProductSearchDto dto) {
         var content = productService.findProductWithFilter(dto);
         return new PagedDto<>(content.getContent().stream().map(mapper::toThumnailDto).collect(Collectors.toList()),
-        content.getTotalPages(), 
-        content.getNumber());
+                content.getTotalPages(),
+                content.getNumber());
     }
-
 
 }

@@ -68,30 +68,32 @@ public class ImageServiceImpl implements ImageService {
             Long productId, String deleteImages) {
         var product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
         List<ImageUploadResponse> res = new LinkedList<>();
-        if(!thumbnail.isEmpty()){
+        if (!thumbnail.isEmpty()) {
             String name = StringUtils.cleanPath(thumbnail.getOriginalFilename());
             try {
                 String filecode = UtilFunctions.saveFile(imagePath, name, thumbnail);
                 product.setThumbnailUrl(filecode);
                 productRepository.save(product);
-                res.add(new ImageUploadResponse(name, true, filecode)) ;
+                res.add(new ImageUploadResponse(name, true, filecode));
             } catch (Exception e) {
                 res.add(new ImageUploadResponse(name, false, null));
             }
         }
 
-        List<String> deleteImagesId = Arrays.asList(deleteImages.split(" ")); 
-        deleteImagesId.stream().forEach((url)->{
-            try{repository.deleteById(url);
+        List<String> deleteImagesId = Arrays.asList(deleteImages.split(" "));
+        deleteImagesId.stream().forEach((url) -> {
+            try {
+                repository.deleteById(url);
                 UtilFunctions.deleteFile(imagePath, url);
-            }catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
-            
+
         });
 
         Arrays.asList(images).stream().forEach((multipartFile) -> {
-            if (multipartFile.isEmpty()) return;
+            if (multipartFile.isEmpty())
+                return;
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             try {
                 String filecode = UtilFunctions.saveFile(imagePath, fileName, multipartFile);

@@ -15,26 +15,24 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.project.image.dto.response.ImageUploadResponse;
 import com.example.project.image.services.ImageService;
 
-
 @RestController
 @RequestMapping("/store-back/images")
 public class ImageController {
     @Autowired
     private ImageService imageService;
 
-
-	//@PostMapping("/upload")
-	ResponseEntity<List<ImageUploadResponse>> uploadFile(
+    // @PostMapping("/upload")
+    ResponseEntity<List<ImageUploadResponse>> uploadFile(
             @RequestParam("file") MultipartFile[] multipartFiles, @RequestParam("productId") Long productId)
-                    throws IOException {
+            throws IOException {
         var response = imageService.uploadImages(multipartFiles, productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    //@PostMapping("/thumbnails/upload")
+    // @PostMapping("/thumbnails/upload")
     ResponseEntity<ImageUploadResponse> uploadThumnail(
             @RequestParam("file") MultipartFile multipartFile, @RequestParam("productId") Long productId)
-                    throws IOException {
+            throws IOException {
         var response = imageService.uploadThumbnail(multipartFile, productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -45,8 +43,8 @@ public class ImageController {
             @RequestParam("thumbnail") MultipartFile thumbnail,
             @RequestParam("productId") Long productId,
             @RequestParam("deleteImages") String deleteImage)
-                    throws IOException {
+            throws IOException {
         var response = imageService.updateImagesData(multipartFiles, thumbnail, productId, deleteImage);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}   
+}

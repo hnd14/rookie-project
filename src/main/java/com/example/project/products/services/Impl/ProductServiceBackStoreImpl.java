@@ -26,7 +26,6 @@ import com.example.project.products.services.ProductService;
 import com.example.project.products.services.ProductServiceBackStore;
 import com.example.project.util.dto.response.PagedDto;
 
-
 @Service
 @Transactional(readOnly = true)
 public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
@@ -42,7 +41,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     CategoryRepository categoryRepository;
     @Autowired
     CategoryMapper categoryMapper;
-    
+
     @Override
     @Transactional
     public ProductAdminDto createNewProduct(PostNewProductDto dto) {
@@ -51,51 +50,56 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
         addCategoriesToProduct(newProduct, dto.categoriesId());
         return mapper.toStaffDto(newProduct);
     }
+
     @Override
     public ProductDetailsAdminDto getProductById(Long id) {
         Product product = repo.findById(id).orElseThrow(ProductNotFoundException::new);
         ProductDetailsAdminDto result = mapper.toDetailsAdminDto(product);
-        result.setCategoriesInfo(product.getCategories().stream().map(categoryMapper::toSimpleCategoryDto).collect(Collectors.toList()));
-        result.setImagesUrl(product.getImages().stream().map((image)->image.getUrl()).collect(Collectors.toList()));
+        result.setCategoriesInfo(
+                product.getCategories().stream().map(categoryMapper::toSimpleCategoryDto).collect(Collectors.toList()));
+        result.setImagesUrl(product.getImages().stream().map((image) -> image.getUrl()).collect(Collectors.toList()));
         return result;
     }
+
     @Override
     public PagedDto<ProductAdminDto> findProductWithFilter(ProductSearchDto dto) {
         var content = productService.findProductWithFilter(dto);
         return new PagedDto<>(content.getContent().stream().map(mapper::toStaffDto).collect(Collectors.toList()),
-        content.getTotalPages(), 
-        content.getNumber());
+                content.getTotalPages(),
+                content.getNumber());
     }
 
     @Override
     @Transactional
     public ProductAdminDto updateProduct(Long id, UpdateProductDto dto) {
         Product productToUpdate = repo.findById(id).orElseThrow(ProductNotFoundException::new);
-        productToUpdate.setDesc(dto.desc() == null?productToUpdate.getDesc():dto.desc());
-        productToUpdate.setSalePrice(dto.salePrice() == null?productToUpdate.getSalePrice():dto.salePrice());
-        productToUpdate.setStock(dto.stock() == null?productToUpdate.getStock():dto.stock());
-        productToUpdate.setIsFeatured(dto.isFeatured() == null?productToUpdate.getIsFeatured():dto.isFeatured());
-        productToUpdate.getCategories().stream().forEach((categories)->{productCategoryRepository.delete(categories);});
+        productToUpdate.setDesc(dto.desc() == null ? productToUpdate.getDesc() : dto.desc());
+        productToUpdate.setSalePrice(dto.salePrice() == null ? productToUpdate.getSalePrice() : dto.salePrice());
+        productToUpdate.setStock(dto.stock() == null ? productToUpdate.getStock() : dto.stock());
+        productToUpdate.setIsFeatured(dto.isFeatured() == null ? productToUpdate.getIsFeatured() : dto.isFeatured());
+        productToUpdate.getCategories().stream().forEach((categories) -> {
+            productCategoryRepository.delete(categories);
+        });
         addCategoriesToProduct(productToUpdate, dto.categoriesId());
         return mapper.toStaffDto(productToUpdate);
     }
 
     @Transactional
-    private void addCategoriesToProduct(Product product, List<Long> categoriesId){
-        if (categoriesId == null) return;
+    private void addCategoriesToProduct(Product product, List<Long> categoriesId) {
+        if (categoriesId == null)
+            return;
         categoriesId.stream().forEach(id -> {
             Category category = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
-            if(productCategoryRepository.findOneByProductAndCategory(product, category).isPresent()){
+            if (productCategoryRepository.findOneByProductAndCategory(product, category).isPresent()) {
                 return;
             }
-            ProductCategory productCategory = new ProductCategory(null,product, category);
+            ProductCategory productCategory = new ProductCategory(null, product, category);
             productCategoryRepository.saveAndFlush(productCategory);
         });
     }
 
-
     @Transactional
-    public void deleteProduct(Long id){
+    public void deleteProduct(Long id) {
         repo.deleteById(id);
     }
 

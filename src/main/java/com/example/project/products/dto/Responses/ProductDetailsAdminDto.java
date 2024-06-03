@@ -12,19 +12,19 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDetailsAdminDto {    
+public class ProductDetailsAdminDto {
     private Long id;
     private String name;
-    private String desc; 
-    private Double salePrice; 
+    private String desc;
+    private Double salePrice;
     private Long stock;
     private Boolean isFeatured;
-    private String thumbnailUrl; 
-    private String createdBy; 
+    private String thumbnailUrl;
+    private String createdBy;
     private String updatedBy;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
     private List<SimpleCategoryDto> categoriesInfo;
-    private List<String> imagesUrl; 
+    private List<String> imagesUrl;
 
 }

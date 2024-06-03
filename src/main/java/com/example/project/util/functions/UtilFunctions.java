@@ -12,24 +12,24 @@ public class UtilFunctions {
     public static String saveFile(String path, String fileName, MultipartFile multipartFile)
             throws IOException {
         var uploadPath = Paths.get(path);
- 
+
         String fileCode = UUID.randomUUID().toString();
         String extension = fileName.substring(fileName.lastIndexOf("."));
-         
+
         try (var inputStream = multipartFile.getInputStream()) {
             var filePath = uploadPath.resolve(fileCode + extension);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ioe) {       
+        } catch (IOException ioe) {
             throw new IOException("Could not save file: " + fileName, ioe);
         }
-         
+
         return fileCode + extension;
     }
 
-    public static void deleteFile(String path, String name) throws IOException{
-        var filePath = Paths.get(path,name);
+    public static void deleteFile(String path, String name) throws IOException {
+        var filePath = Paths.get(path, name);
         try {
-            Files.delete(filePath);  
+            Files.delete(filePath);
         } catch (IOException e) {
             throw new IOException("Could not delete file: " + filePath.toString(), e);
         }

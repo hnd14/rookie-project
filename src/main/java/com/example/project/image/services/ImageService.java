@@ -9,7 +9,10 @@ import com.example.project.image.dto.response.ImageUploadResponse;
 public interface ImageService {
 
     List<ImageUploadResponse> uploadImages(MultipartFile[] images, Long productId);
+
     ImageUploadResponse uploadThumbnail(MultipartFile image, Long productId);
-    List<ImageUploadResponse> updateImagesData(MultipartFile[] images, MultipartFile thumbnail, Long productId, String deleteImages);
+
+    List<ImageUploadResponse> updateImagesData(MultipartFile[] images, MultipartFile thumbnail, Long productId,
+            String deleteImages);
 
 }

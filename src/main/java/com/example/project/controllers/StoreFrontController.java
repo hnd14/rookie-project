@@ -33,7 +33,6 @@ import com.example.project.users.services.UserService;
 import com.example.project.util.dto.requests.PagingDto;
 import com.example.project.util.dto.response.PagedDto;
 
-
 @RestController
 @RequestMapping("/store")
 public class StoreFrontController extends V1Rest {
@@ -45,33 +44,33 @@ public class StoreFrontController extends V1Rest {
     RatingService ratingService;
     @Autowired
     CategoryServiceStore categoryService;
-    
+
     @GetMapping("/products/{id}")
-    ProductCustomerDto getProductById(@PathVariable Long id){
+    ProductCustomerDto getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
     @GetMapping("/products")
     @ResponseBody
-    PagedDto<ProductThumnailDto> findProductsWithFilter(ProductSearchDto dto){
+    PagedDto<ProductThumnailDto> findProductsWithFilter(ProductSearchDto dto) {
         return productService.findProductWithFilter(dto);
     }
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReturnDto signUp(@RequestBody CustomerSignUpDto dto){
+    public UserReturnDto signUp(@RequestBody CustomerSignUpDto dto) {
         return userService.signUp(dto);
     }
 
     @GetMapping("/categories")
-    public PagedDto<CategoryDto> getCategory(PagingDto dto){
+    public PagedDto<CategoryDto> getCategory(PagingDto dto) {
         return categoryService.findAllCategories(dto);
     }
 
     @PutMapping("/me")
-    public UserReturnDto updateUserInfo(@RequestBody UpdateUserInfoDto dto){
+    public UserReturnDto updateUserInfo(@RequestBody UpdateUserInfoDto dto) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication==null || authentication.isAuthenticated()){
+        if (authentication == null || authentication.isAuthenticated()) {
             throw new SecurityException("You need to log in to use this function.");
         }
         var username = authentication.getPrincipal().toString();
@@ -80,35 +79,34 @@ public class StoreFrontController extends V1Rest {
 
     @PostMapping("/products/{id}/ratings")
     @ResponseStatus(HttpStatus.CREATED)
-    public NewRatingPostedDto postRating(@PathVariable Long id,@RequestBody PostNewRatingDto dto){
+    public NewRatingPostedDto postRating(@PathVariable Long id, @RequestBody PostNewRatingDto dto) {
         return ratingService.postNewRating(id, dto);
     }
 
     @GetMapping("/products/{id}/ratings/avg")
-    public AverageRatingDto getAvgRating(@PathVariable Long id){
+    public AverageRatingDto getAvgRating(@PathVariable Long id) {
         return ratingService.getAvgRating(id);
     }
 
     @GetMapping("/products/{id}/ratings")
     @ResponseBody
-    public PagedDto<RatingDetailsDto> getAllRating(@PathVariable Long id,PagingDto pagingDto){
+    public PagedDto<RatingDetailsDto> getAllRating(@PathVariable Long id, PagingDto pagingDto) {
         return ratingService.getAllRatingsFor(id, pagingDto);
     }
 
     @GetMapping("/products/{id}/ratings/me")
-    public RatingDetailsDto getMyRating(@PathVariable String id){
+    public RatingDetailsDto getMyRating(@PathVariable String id) {
         return ratingService.getMyRating(id);
     }
 
     @PutMapping("/products/{id}/ratings")
-    public RatingDetailsDto editRating(@PathVariable(name = "id") String id, @RequestBody EditRatingDto dto){
-        return ratingService.editRating(id,dto);
+    public RatingDetailsDto editRating(@PathVariable(name = "id") String id, @RequestBody EditRatingDto dto) {
+        return ratingService.editRating(id, dto);
     }
 
     @DeleteMapping("/products/{id}/ratings")
-    public void deleteRating(@PathVariable(name = "id") String id){
+    public void deleteRating(@PathVariable(name = "id") String id) {
         ratingService.deleteRating(id);
     }
 
-
-}   
+}

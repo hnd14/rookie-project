@@ -1,5 +1,5 @@
 package com.example.project.controllers;
-    
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,19 +22,19 @@ import jakarta.validation.Valid;
 public class AuthController extends V1Rest {
     @Autowired
     private UserService userService;
-    
+
     @PostMapping("/sign-in")
-    public LoginResponseDto signIn(@RequestBody @Valid SignInDto dto, HttpServletResponse response){
+    public LoginResponseDto signIn(@RequestBody @Valid SignInDto dto, HttpServletResponse response) {
         var jwtToken = userService.signIn(dto);
         Cookie cookie = new Cookie("accessToken", jwtToken.accessToken().get());
-        cookie.setPath("/"); 
+        cookie.setPath("/");
         response.addCookie(cookie);
         return jwtToken;
     }
-    
+
     @GetMapping("/log-out")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signOut(HttpServletResponse response){
+    public void signOut(HttpServletResponse response) {
         Cookie cookie = new Cookie("accessToken", null);
         cookie.setPath("/");
         cookie.setMaxAge(0);
@@ -42,7 +42,7 @@ public class AuthController extends V1Rest {
     }
 
     @GetMapping("/verify")
-    public LoginResponseDto verify(){
+    public LoginResponseDto verify() {
         return userService.verify();
     }
 }

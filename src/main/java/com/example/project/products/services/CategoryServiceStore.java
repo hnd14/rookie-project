@@ -9,5 +9,6 @@ import com.example.project.util.dto.response.PagedDto;
 @Service
 public interface CategoryServiceStore {
     CategoryDto findCategoryById(Long id);
+
     PagedDto<CategoryDto> findAllCategories(PagingDto dto);
 }

@@ -6,8 +6,8 @@ import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public record PagingDto(Optional<String> sortBy,
-  Optional<String> direction, 
-  Optional<Integer> pageSize,
-  Optional<Integer> pageNumber) {
+    Optional<String> direction,
+    Optional<Integer> pageSize,
+    Optional<Integer> pageNumber) {
 
 }

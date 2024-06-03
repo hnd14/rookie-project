@@ -10,6 +10,6 @@ import com.example.project.products.entities.Product;
 import com.example.project.products.entities.ProductCategory;
 
 @Repository
-public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long>{
+public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
     Optional<ProductCategory> findOneByProductAndCategory(Product product, Category category);
 }

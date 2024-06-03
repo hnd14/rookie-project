@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @AllArgsConstructor
-public class Category extends Auditor{
+public class Category extends Auditor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column

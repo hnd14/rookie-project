@@ -10,9 +10,14 @@ import com.example.project.util.dto.response.PagedDto;
 
 public interface RatingService {
     NewRatingPostedDto postNewRating(Long productId, PostNewRatingDto dto);
+
     AverageRatingDto getAvgRating(Long productId);
+
     PagedDto<RatingDetailsDto> getAllRatingsFor(Long productId, PagingDto dto);
+
     RatingDetailsDto editRating(String productId, EditRatingDto dto);
+
     RatingDetailsDto getMyRating(String productId);
+
     void deleteRating(String productId);
 }

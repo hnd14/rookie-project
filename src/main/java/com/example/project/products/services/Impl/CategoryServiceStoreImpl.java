@@ -15,12 +15,12 @@ import com.example.project.util.dto.response.PagedDto;
 
 @Service
 @Transactional(readOnly = true)
-public class CategoryServiceStoreImpl implements CategoryServiceStore{
+public class CategoryServiceStoreImpl implements CategoryServiceStore {
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private CategoryMapper mapper;
-    
+
     @Override
     public CategoryDto findCategoryById(Long id) {
         return mapper.toDto(categoryService.getCategoryById(id));
@@ -28,9 +28,9 @@ public class CategoryServiceStoreImpl implements CategoryServiceStore{
 
     @Override
     public PagedDto<CategoryDto> findAllCategories(PagingDto dto) {
-        var categories = categoryService.findAllCategories(dto); 
+        var categories = categoryService.findAllCategories(dto);
         var content = categories.getContent().stream().map(mapper::toDto).collect(Collectors.toList());
-        return new PagedDto<>(content,categories.getTotalPages(),categories.getNumber());
+        return new PagedDto<>(content, categories.getTotalPages(), categories.getNumber());
     }
 
 }

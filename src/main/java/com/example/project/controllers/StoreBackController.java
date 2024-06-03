@@ -34,9 +34,9 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/store-back")
 @AllArgsConstructor
-public class StoreBackController extends V1Rest{
+public class StoreBackController extends V1Rest {
     @Autowired
-    private final ProductServiceBackStore productService; 
+    private final ProductServiceBackStore productService;
     @Autowired
     private final CategoryServiceBackStore categoryService;
     @Autowired
@@ -44,67 +44,67 @@ public class StoreBackController extends V1Rest{
 
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductAdminDto createNewProduct(@RequestBody @Valid PostNewProductDto dto){
+    public ProductAdminDto createNewProduct(@RequestBody @Valid PostNewProductDto dto) {
         return productService.createNewProduct(dto);
     }
 
     @GetMapping("/products/{id}")
-    public ProductDetailsAdminDto getProductById(@PathVariable Long id){
+    public ProductDetailsAdminDto getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
     @GetMapping("/products")
-    public PagedDto<ProductAdminDto> getProducts(ProductSearchDto dto){
+    public PagedDto<ProductAdminDto> getProducts(ProductSearchDto dto) {
         return productService.findProductWithFilter(dto);
     }
 
     @PutMapping("/products/{id}")
-    public ProductAdminDto updateProduct(@PathVariable Long id, @RequestBody UpdateProductDto dto){
+    public ProductAdminDto updateProduct(@PathVariable Long id, @RequestBody UpdateProductDto dto) {
         return productService.updateProduct(id, dto);
     }
 
     @DeleteMapping("/products/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable Long id){
+    public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryAdminDto createNewCategory(@Valid @RequestBody PostNewCategoryDto dto){
+    public CategoryAdminDto createNewCategory(@Valid @RequestBody PostNewCategoryDto dto) {
         return categoryService.createNew(dto);
     }
 
     @GetMapping("/categories")
-    public PagedDto<CategoryAdminDto> findAllCategories(PagingDto dto){
+    public PagedDto<CategoryAdminDto> findAllCategories(PagingDto dto) {
         return categoryService.findAllCategories(dto);
     }
 
     @DeleteMapping("/categories/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable Long id){
+    public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
     }
 
     @PutMapping("/categories/{id}")
-    public CategoryAdminDto updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryDto dto){
+    public CategoryAdminDto updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryDto dto) {
         return categoryService.update(id, dto);
     }
 
     @PostMapping("/admins")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReturnDto createAdmin(@RequestBody CreateNewAdminDto dto){
+    public UserReturnDto createAdmin(@RequestBody CreateNewAdminDto dto) {
         return userService.createNewAdminUser(dto);
     }
 
     @GetMapping("/users/{id}")
-    public UserReturnDto getUserById (@PathVariable Long id){
+    public UserReturnDto getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id){
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 }

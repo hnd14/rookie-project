@@ -1,6 +1,5 @@
 package com.example.project.products.services.Impl;
 
-
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ import com.example.project.util.exceptions.DuplicatedResourceException;
 
 import jakarta.validation.Valid;
 
-
-
 @Service
 @Transactional(readOnly = true)
 public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
@@ -41,15 +38,15 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
 
     @Override
     public PagedDto<CategoryAdminDto> findAllCategories(PagingDto dto) {
-        var categories = categoryService.findAllCategories(dto); 
+        var categories = categoryService.findAllCategories(dto);
         var content = categories.getContent().stream().map(mapper::toAdminDto).collect(Collectors.toList());
-        return new PagedDto<>(content,categories.getTotalPages(),categories.getNumber());
+        return new PagedDto<>(content, categories.getTotalPages(), categories.getNumber());
     }
 
     @Override
     @Transactional
     public CategoryAdminDto createNew(@Valid PostNewCategoryDto dto) {
-        if(repo.findOneByName(dto.name()).isPresent()){
+        if (repo.findOneByName(dto.name()).isPresent()) {
             throw new DuplicatedResourceException();
         }
         Category newCategory = mapper.toNewCategory(dto);
@@ -58,7 +55,7 @@ public class CategoryServiceBackStoreImpl implements CategoryServiceBackStore {
     }
 
     @Transactional
-    public void deleteCategory(Long id){
+    public void deleteCategory(Long id) {
         repo.deleteById(id);
     }
 

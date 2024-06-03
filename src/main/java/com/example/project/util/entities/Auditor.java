@@ -35,47 +35,46 @@ public class Auditor {
     String updatedBy;
 
     @PrePersist
-    void createdAudit(){
+    void createdAudit() {
         setCreatedTime();
         setCreatedBy();
     }
 
-    void setCreatedTime(){
-        this.createdTime = LocalDateTime.now(); 
+    void setCreatedTime() {
+        this.createdTime = LocalDateTime.now();
     }
 
-    void setCreatedBy(){
+    void setCreatedBy() {
         String username = "Anonymous";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null 
-            || !authentication.isAuthenticated()
-            || authentication instanceof AnonymousAuthenticationToken) {
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
             username = "Anonymous";
-        }else{
+        } else {
             username = authentication.getPrincipal().toString();
         }
         this.createdBy = username;
     }
 
     @PreUpdate
-    void updateAudit(){
+    void updateAudit() {
         setUpdatedBy();
         setUpdatedTime();
     }
-    
-    void setUpdatedTime(){
-        this.updatedTime = LocalDateTime.now(); 
+
+    void setUpdatedTime() {
+        this.updatedTime = LocalDateTime.now();
     }
 
-    
-    void setUpdatedBy(){
+    void setUpdatedBy() {
         String username;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null 
-            || !authentication.isAuthenticated()
-            || authentication instanceof AnonymousAuthenticationToken) {
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
             username = "Anonymous";
-        }else{
+        } else {
             username = authentication.getPrincipal().toString();
         }
         this.updatedBy = username;

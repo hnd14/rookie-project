@@ -24,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ratings")
-public class Rating extends Auditor{
+public class Rating extends Auditor {
     @Id
     String id;
 
@@ -63,8 +63,8 @@ public class Rating extends Auditor{
 
     @ManyToOne
     @JoinColumns({
-        @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id"),
-        @JoinColumn(name = "username", nullable = false, referencedColumnName = "username")
+            @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id"),
+            @JoinColumn(name = "username", nullable = false, referencedColumnName = "username")
     })
     User user;
 

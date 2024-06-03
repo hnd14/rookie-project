@@ -1,6 +1,5 @@
 package com.example.project.products.services;
 
-
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +9,6 @@ import com.example.project.util.dto.requests.PagingDto;
 @Service
 public interface CategoryService {
     Category getCategoryById(Long id);
+
     Page<Category> findAllCategories(PagingDto dto);
 }

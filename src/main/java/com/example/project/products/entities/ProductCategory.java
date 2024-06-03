@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name ="products_categories")
+@Table(name = "products_categories")
 @Getter
 @Setter
 @Builder
@@ -32,8 +32,8 @@ public class ProductCategory {
 
     @ManyToOne
     @JoinColumns({
-        @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id"),
-        @JoinColumn(name = "category_name", nullable = false, referencedColumnName = "name")
+            @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id"),
+            @JoinColumn(name = "category_name", nullable = false, referencedColumnName = "name")
     })
     private Category category;
 

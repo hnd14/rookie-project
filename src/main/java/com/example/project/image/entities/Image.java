@@ -1,6 +1,5 @@
 package com.example.project.image.entities;
 
-
 import com.example.project.products.entities.Product;
 
 import jakarta.persistence.Column;
@@ -20,8 +19,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image{
-    
+public class Image {
+
     @Id
     @Column(name = "img_url", nullable = false)
     private String url;
