@@ -76,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
         Boolean isFeatured = dto.isFeatured().orElse(false);
 
         var sortBy = dto.sortBy().orElse(DEFAULT_SORT_BY);
+        sortBy = sortBy.equals("avgRating") ? "avgRating_avgRating" : sortBy;
         String sortDir = dto.direction().orElse("ASC");
         Sort.Direction direction = sortDir.equals("DESC") ? Direction.DESC : Direction.ASC;
         Sort sort = Sort.by(direction, sortBy);

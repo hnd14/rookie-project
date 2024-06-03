@@ -14,7 +14,6 @@ import com.example.project.products.mapper.ProductMapper;
 import com.example.project.products.repositories.ProductRepository;
 import com.example.project.products.services.ProductService;
 import com.example.project.products.services.ProductServiceStore;
-import com.example.project.ratings.repositories.RatingRepository;
 import com.example.project.util.dto.response.PagedDto;
 
 @Service
@@ -26,8 +25,6 @@ public class ProductServiceStoreImpl implements ProductServiceStore {
     private ProductMapper mapper;
     @Autowired
     private ProductService productService;
-    @Autowired
-    private RatingRepository ratingRepository;
 
     public ProductCustomerDto getProductById(Long id) {
         return repo.findById(id).map((product) -> {
@@ -37,7 +34,7 @@ public class ProductServiceStoreImpl implements ProductServiceStore {
                     .map((category) -> category.getCategory().getName())
                     .collect(Collectors.toList()));
             res.setImagesUrl(product.getImages().stream().map((image) -> image.getUrl()).collect(Collectors.toList()));
-            res.setAverageScore(ratingRepository.findAverageRatingForProduct(id));
+            res.setAverageScore(product.getAvgRating().getAvgRating());
             return res;
         }).orElseThrow(ProductNotFoundException::new);
     }

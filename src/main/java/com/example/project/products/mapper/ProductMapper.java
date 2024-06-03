@@ -16,7 +16,7 @@ import com.example.project.products.entities.Product;
 public interface ProductMapper {
     @Mapping(target = "categories", ignore = true)
     @Mapping(target = "imagesUrl", ignore = true)
-    @Mapping(target = "averageScore", ignore = true)
+    @Mapping(target = "averageScore", source = "product.avgRating.avgRating")
     ProductCustomerDto toCustomerDto(Product product);
 
     @Mapping(ignore = true, target = "id")
@@ -29,5 +29,6 @@ public interface ProductMapper {
     @Mapping(target = "categoriesInfo", ignore = true)
     ProductDetailsAdminDto toDetailsAdminDto(Product product);
 
+    @Mapping(target = "avgRating", source = "product.avgRating.avgRating")
     ProductThumnailDto toThumnailDto(Product product);
 }

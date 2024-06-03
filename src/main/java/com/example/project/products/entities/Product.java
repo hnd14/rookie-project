@@ -9,11 +9,14 @@ import com.example.project.util.entities.Auditor;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -28,6 +31,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@SecondaryTable(name = "scores", pkJoinColumns = @PrimaryKeyJoinColumn(name = "product_id"))
 public class Product extends Auditor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +55,9 @@ public class Product extends Auditor {
 
     @Column
     private String thumbnailUrl;
+
+    @Embedded
+    private AverageProductRating avgRating = new AverageProductRating();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductCategory> categories = new ArrayList<>();

@@ -46,6 +46,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     @Transactional
     public ProductAdminDto createNewProduct(PostNewProductDto dto) {
         Product newProduct = mapper.toNewProduct(dto);
+        newProduct.getAvgRating().setAvgRating(0.0);
         repo.save(newProduct);
         addCategoriesToProduct(newProduct, dto.categoriesId());
         return mapper.toStaffDto(newProduct);

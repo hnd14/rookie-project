@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.project.products.entities.Product;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.repositories.ProductRepository;
 import com.example.project.ratings.dto.requests.EditRatingDto;
@@ -53,12 +54,15 @@ public class RatingServiceImpl implements RatingService {
         var username = authentication.getPrincipal().toString();
         Rating newRating = new Rating();
         newRating.setScores(dto.scores());
-        newRating.setProduct(productRepository.findById(productId).orElseThrow(ProductNotFoundException::new));
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
+        newRating.setProduct(product);
         User user = userRepository.findOneByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         newRating.setUser(user);
         newRating.setId(productId.toString() + "_" + user.getUsername().toString());
-        ratingRepository.save(newRating);
+        ratingRepository.saveAndFlush(newRating);
+        product.getAvgRating().setAvgRating(ratingRepository.findAverageRatingForProduct(productId));
+        productRepository.save(product);
         return new NewRatingPostedDto(newRating.getId());
     }
 
@@ -102,13 +106,16 @@ public class RatingServiceImpl implements RatingService {
         Rating rating = ratingRepository.findById(productId + "_" + username).orElse(new Rating());
         rating.setScores(dto.scores().orElse(rating.getScores()));
         rating.setComment(dto.comment().orElse(rating.getComment()));
-        rating.setProduct(
-                productRepository.findById(Long.valueOf(productId)).orElseThrow(ProductNotFoundException::new));
+        Product product = productRepository.findById(Long.valueOf(productId))
+                .orElseThrow(ProductNotFoundException::new);
+        rating.setProduct(product);
         User user = userRepository.findOneByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         rating.setUser(user);
         rating.setId(productId + "_" + username);
-        ratingRepository.save(rating);
+        ratingRepository.saveAndFlush(rating);
+        product.getAvgRating().setAvgRating(ratingRepository.findAverageRatingForProduct(Long.valueOf(productId)));
+        productRepository.save(product);
         return new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(), productId, rating.getScores(),
                 rating.getComment());
     }
