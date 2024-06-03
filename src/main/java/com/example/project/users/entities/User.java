@@ -35,7 +35,7 @@ import com.example.project.util.entities.Auditor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends Auditor implements UserDetails{
+public class User extends Auditor implements UserDetails {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -46,48 +46,40 @@ public class User extends Auditor implements UserDetails{
 
     @Column(unique = true, length = 100)
     private String email;
-    
+
     @Column(length = 2500)
     private String password;
 
     @Embedded
     private UserInfos userInfos;
 
-    // @Embedded
-    // private Auditor auditor;
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "role_name")
-    )
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "role_name"))
     private Set<Role> roles;
 
-
     @Override
-    public boolean isAccountNonExpired () {
+    public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked () {
+    public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
-    public boolean isCredentialsNonExpired () {
+    public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    public boolean isEnabled () {
+    public boolean isEnabled() {
         return true;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities () {
-        if ( this.roles != null ) {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.roles != null) {
             return this.roles.stream().map(e -> new SimpleGrantedAuthority(e.getRoleName())).toList();
         }
         return Collections.emptyList();
