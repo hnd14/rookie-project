@@ -2,15 +2,20 @@ package com.example.project.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.project.users.dto.requests.SignInDto;
+import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.LoginResponseDto;
+import com.example.project.users.dto.responses.UserDetailsDto;
+import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.services.UserService;
 
 import jakarta.servlet.http.Cookie;
@@ -44,5 +49,20 @@ public class AuthController extends V1Rest {
     @GetMapping("/verify")
     public LoginResponseDto verify() {
         return userService.verify();
+    }
+
+    @GetMapping("/me")
+    public UserDetailsDto getCurrentUserDetails() {
+        return userService.getCurrentUser();
+    }
+
+    @PutMapping("/me")
+    public UserReturnDto updateUserInfo(@RequestBody UpdateUserInfoDto dto) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.isAuthenticated()) {
+            throw new SecurityException("You need to log in to use this function.");
+        }
+        var username = authentication.getPrincipal().toString();
+        return userService.updateUserInfo(username, dto);
     }
 }

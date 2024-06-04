@@ -27,6 +27,7 @@ import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.LoginResponseDto;
 import com.example.project.users.dto.responses.UserAdminDto;
+import com.example.project.users.dto.responses.UserDetailsDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.entities.Role;
 import com.example.project.users.entities.User;
@@ -164,6 +165,19 @@ public class UserServiceImpl implements UserService {
                         String.valueOf(user.getCreatedTime()),
                         user.getRoles().stream().map(role -> role.getRoleName()).collect(Collectors.toList()))))
                 .collect(Collectors.toList()), content.getTotalPages(), content.getNumber());
+    }
+
+    @Override
+    public UserDetailsDto getCurrentUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
+            return new UserDetailsDto(null, null, null);
+        }
+        var username = authentication.getName();
+        var user = repository.findOneByUsername(username).orElse(new User());
+        return new UserDetailsDto(user.getUsername(), user.getEmail(), user.getUserInfos());
     }
 
 }

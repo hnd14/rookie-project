@@ -2,7 +2,6 @@ package com.example.project.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +26,6 @@ import com.example.project.ratings.dto.responses.NewRatingPostedDto;
 import com.example.project.ratings.dto.responses.RatingDetailsDto;
 import com.example.project.ratings.services.RatingService;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
-import com.example.project.users.dto.requests.UpdateUserInfoDto;
 import com.example.project.users.dto.responses.UserReturnDto;
 import com.example.project.users.services.UserService;
 import com.example.project.util.dto.requests.PagingDto;
@@ -65,16 +63,6 @@ public class StoreFrontController extends V1Rest {
     @GetMapping("/categories")
     public PagedDto<CategoryDto> getCategory(PagingDto dto) {
         return categoryService.findAllCategories(dto);
-    }
-
-    @PutMapping("/me")
-    public UserReturnDto updateUserInfo(@RequestBody UpdateUserInfoDto dto) {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.isAuthenticated()) {
-            throw new SecurityException("You need to log in to use this function.");
-        }
-        var username = authentication.getPrincipal().toString();
-        return userService.updateUserInfo(username, dto);
     }
 
     @PostMapping("/products/{id}/ratings")
