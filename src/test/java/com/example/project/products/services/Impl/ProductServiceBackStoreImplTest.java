@@ -28,7 +28,9 @@ import com.example.project.products.dto.Requests.PostNewProductDto;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Requests.UpdateProductDto;
 import com.example.project.products.dto.Responses.ProductAdminDto;
+import com.example.project.products.entities.Category;
 import com.example.project.products.entities.Product;
+import com.example.project.products.entities.ProductCategory;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.mapper.CategoryMapperImpl;
 import com.example.project.products.mapper.ProductMapperImpl;
@@ -50,9 +52,9 @@ public class ProductServiceBackStoreImplTest {
     @MockBean
     private RatingRepository mockRatingRepository;
     @MockBean
-    private ProductCategoryRepository productCategoryRepository;
+    private ProductCategoryRepository mockProductCategoryRepository;
     @MockBean
-    private CategoryRepository categoryRepository;
+    private CategoryRepository mockCategoryRepository;
     @Autowired
     private ProductServiceBackStoreImpl service;
     @Autowired
@@ -61,6 +63,8 @@ public class ProductServiceBackStoreImplTest {
     private Product productInDB;
 
     private Page<Product> returnPage;
+
+    private Category categoryInDB;
 
     @BeforeEach
     void setUpMock() {
@@ -72,15 +76,25 @@ public class ProductServiceBackStoreImplTest {
         productInDB.setIsFeatured(false);
         productInDB.setThumbnailUrl("thumbnail");
         productInDB.getAvgRating().setAvgRating(0.0);
-        ;
         productInDB.setCategories(new ArrayList<>());
         productInDB.setImages(new ArrayList<>());
+
+        categoryInDB = new Category();
+        categoryInDB.setId(Long.valueOf(10));
+        categoryInDB.setName("new category");
+
+        productInDB.getCategories().add(new ProductCategory(Long.valueOf(1), productInDB, categoryInDB));
+
         returnPage = new PageImpl<>(List.of(productInDB));
 
         lenient().when(mockProductRepository.findById(Long.valueOf(20))).thenReturn(Optional.of(productInDB));
         lenient().when(mockProductRepository.findById(Long.valueOf(15))).thenReturn(Optional.empty());
         lenient().when(mockRatingRepository.findAverageRatingForProduct(Long.valueOf(20))).thenReturn(5.0);
         lenient().when(mockProductService.findProductWithFilter(any())).thenReturn(returnPage);
+        lenient().when(mockCategoryRepository.findById(Long.valueOf(10))).thenReturn(Optional.of(categoryInDB));
+        lenient().when(mockCategoryRepository.findById(Long.valueOf(15))).thenReturn(Optional.empty());
+        lenient().when(mockProductCategoryRepository.findOneByProductAndCategory(productInDB, categoryInDB))
+                .thenReturn(Optional.of(new ProductCategory(Long.valueOf(1), productInDB, categoryInDB)));
         lenient().when(mockProductRepository.save(any())).thenAnswer((invocation) -> {
             Product newProd = (Product) invocation.getArgument(0);
             if (newProd.getName() == null || newProd.getName().equals("")) {
@@ -189,7 +203,7 @@ public class ProductServiceBackStoreImplTest {
         var updatedStock = Long.valueOf(15);
         var updatedPrice = 100.0;
         var updatedIsFeatured = true;
-        var updateCategoriesId = new ArrayList<Long>();
+        var updateCategoriesId = List.of(Long.valueOf(10));
         var updateDto = new UpdateProductDto(updatedDesc, updatedStock, updatedPrice, updateCategoriesId,
                 updatedIsFeatured);
         // run
@@ -201,6 +215,23 @@ public class ProductServiceBackStoreImplTest {
                 .hasFieldOrPropertyWithValue("desc", updatedDesc)
                 .hasFieldOrPropertyWithValue("salePrice", updatedPrice)
                 .hasFieldOrPropertyWithValue("isFeatured", updatedIsFeatured);
+        verify(mockProductRepository, times(1)).save(any());
+    }
+
+    @Test
+    void testUpdate_whenGivenCorrectIdWithoutSomeField_shouldPartialUpdate() {
+        // set up
+        var updateDto = new UpdateProductDto(null, null, null, null,
+                null);
+        // run
+        var result = service.updateProduct((long) 20, updateDto);
+
+        // assert
+        assertThat(result).hasFieldOrPropertyWithValue("id", Long.valueOf(20))
+                .hasFieldOrPropertyWithValue("name", productInDB.getName())
+                .hasFieldOrPropertyWithValue("desc", productInDB.getDesc())
+                .hasFieldOrPropertyWithValue("salePrice", productInDB.getSalePrice())
+                .hasFieldOrPropertyWithValue("isFeatured", productInDB.getIsFeatured());
         verify(mockProductRepository, times(1)).save(any());
     }
 

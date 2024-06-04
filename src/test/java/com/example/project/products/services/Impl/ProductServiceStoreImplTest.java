@@ -24,6 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductThumnailDto;
 import com.example.project.products.entities.Product;
+import com.example.project.products.entities.ProductCategory;
 import com.example.project.products.exceptions.ProductNotFoundException;
 import com.example.project.products.mapper.ProductMapperImpl;
 import com.example.project.products.repositories.ProductRepository;
@@ -59,6 +60,7 @@ public class ProductServiceStoreImplTest {
         productInDB.setSalePrice(500.0);
         productInDB.setIsFeatured(false);
         productInDB.setThumbnailUrl("thumbnail");
+        productInDB.getAvgRating().setAvgRating(0.0);
         productInDB.setCategories(new ArrayList<>());
         productInDB.setImages(new ArrayList<>());
         returnPage = new PageImpl<>(List.of(productInDB));
