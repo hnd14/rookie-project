@@ -2,6 +2,7 @@ package com.example.project.util.exceptions.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -34,6 +35,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicatedResourceException.class)
     public ResponseEntity<ErrorDto> handleDuplicatedResourceException(DuplicatedResourceException ex, WebRequest req) {
         String message = "Resource you are trying to create already existed.";
+        log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 400, message);
+        ErrorDto dto = new ErrorDto("400", HttpStatus.BAD_REQUEST.toString(), message, null);
+        return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ErrorDto> handleSecurityException(SecurityException exception, WebRequest req) {
+        String message = exception.getMessage();
+        log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 403, message);
+        ErrorDto dto = new ErrorDto("403", HttpStatus.FORBIDDEN.toString(), message, null);
+        return new ResponseEntity<>(dto, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorDto> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest req) {
+        String message = exception.getMessage();
+        log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 400, message);
+        ErrorDto dto = new ErrorDto("400", HttpStatus.BAD_REQUEST.toString(), message, null);
+        return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
+            WebRequest req) {
+        String message = exception.getFieldError().getField() + " " + exception.getFieldError().getDefaultMessage();
         log.warn(ERROR_LOG_FORMAT, getRequestPath(req), 400, message);
         ErrorDto dto = new ErrorDto("400", HttpStatus.BAD_REQUEST.toString(), message, null);
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
