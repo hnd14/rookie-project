@@ -25,6 +25,7 @@ import com.example.project.products.repositories.ProductRepository;
 import com.example.project.products.services.ProductService;
 import com.example.project.products.services.ProductServiceBackStore;
 import com.example.project.util.dto.response.PagedDto;
+import com.example.project.util.functions.UtilFunctions;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,6 +42,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     CategoryRepository categoryRepository;
     @Autowired
     CategoryMapper categoryMapper;
+    private String imagePath = "C:/Users/dnhoa/Image/";
 
     @Override
     @Transactional
@@ -102,6 +104,14 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
 
     @Transactional
     public void deleteProduct(Long id) {
+        Product product = repo.findById(id).orElse(new Product());
+        product.getImages().stream().forEach((image) -> {
+            try {
+                UtilFunctions.deleteFile(imagePath, image.getUrl());
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        });
         repo.deleteById(id);
     }
 
