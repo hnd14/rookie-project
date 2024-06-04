@@ -71,6 +71,8 @@ public class ProductServiceBackStoreImplTest {
         productInDB.setSalePrice(500.0);
         productInDB.setIsFeatured(false);
         productInDB.setThumbnailUrl("thumbnail");
+        productInDB.getAvgRating().setAvgRating(0.0);
+        ;
         productInDB.setCategories(new ArrayList<>());
         productInDB.setImages(new ArrayList<>());
         returnPage = new PageImpl<>(List.of(productInDB));
@@ -97,12 +99,12 @@ public class ProductServiceBackStoreImplTest {
         // set up
         var newPostDto = new PostNewProductDto("new product", "", (long) 0, 500.0, List.of(), true);
         var newProduct = mapper.toNewProduct(newPostDto);
+        newProduct.getAvgRating().setAvgRating(0.0);
         // run
         var result = service.createNewProduct(newPostDto);
 
         // assert
-        assertThat(result).usingRecursiveComparison().ignoringFields("id")
-                .isEqualTo(mapper.toStaffDto(newProduct));
+        assertThat(result).usingRecursiveComparison().ignoringFields("id").isEqualTo(mapper.toStaffDto(newProduct));
         assertThat(result).extracting("id").isNotNull();
     }
 

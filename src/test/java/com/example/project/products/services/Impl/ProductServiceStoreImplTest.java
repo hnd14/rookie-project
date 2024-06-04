@@ -80,7 +80,7 @@ public class ProductServiceStoreImplTest {
                 productInDB.getName()).hasFieldOrPropertyWithValue("desc", productInDB.getDesc())
                 .hasFieldOrPropertyWithValue("salePrice", productInDB.getSalePrice())
                 .hasFieldOrPropertyWithValue("thumbnailUrl", productInDB.getThumbnailUrl())
-                .hasFieldOrPropertyWithValue("averageScore", 5.0);
+                .hasFieldOrPropertyWithValue("averageScore", 0.0);
     }
 
     @Test
