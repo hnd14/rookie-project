@@ -105,14 +105,15 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     @Transactional
     public void deleteProduct(Long id) {
         Product product = repo.findById(id).orElse(new Product());
-        product.getImages().stream().forEach((image) -> {
+        var images = product.getImages();
+        repo.deleteById(id);
+        images.stream().forEach((image) -> {
             try {
                 UtilFunctions.deleteFile(imagePath, image.getUrl());
             } catch (Exception e) {
                 // TODO: handle exception
             }
         });
-        repo.deleteById(id);
     }
 
 }
