@@ -87,7 +87,7 @@ public class StoreBackController extends V1Rest {
     }
 
     @PutMapping("/categories/{id}")
-    public CategoryAdminDto updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryDto dto) {
+    public CategoryAdminDto updateCategory(@PathVariable Long id, @RequestBody @Valid UpdateCategoryDto dto) {
         return categoryService.update(id, dto);
     }
 
