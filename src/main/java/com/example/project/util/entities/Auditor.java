@@ -38,6 +38,8 @@ public class Auditor {
     void createdAudit() {
         setCreatedTime();
         setCreatedBy();
+        setUpdatedBy();
+        setUpdatedTime();
     }
 
     void setCreatedTime() {
