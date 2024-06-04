@@ -23,6 +23,7 @@ public interface ProductMapper {
     @Mapping(ignore = true, target = "categories")
     Product toNewProduct(PostNewProductDto dto);
 
+    @Mapping(target = "avgRating", source = "product.avgRating.avgRating")
     ProductAdminDto toStaffDto(Product product);
 
     @Mapping(target = "imagesUrl", ignore = true)
