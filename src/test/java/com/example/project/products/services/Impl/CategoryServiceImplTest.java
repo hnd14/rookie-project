@@ -14,6 +14,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +71,16 @@ public class CategoryServiceImplTest {
         var result = service.findAllCategories(emptyDto);
         // assert
         assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    void testFindAllCategories_whenGivenDescSort_shouldReturn() {
+        // set up
+        var inputDto = new PagingDto(Optional.empty(), Optional.of("DESC"), Optional.empty(), Optional.empty());
+        // run
+        var result = service.findAllCategories(inputDto);
+        // assert
+        assertThat(result).isInstanceOf(Page.class);
     }
 
     @Test

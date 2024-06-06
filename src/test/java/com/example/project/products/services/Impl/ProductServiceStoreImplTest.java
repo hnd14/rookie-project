@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,8 +20,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.example.project.image.entities.Image;
 import com.example.project.products.dto.Requests.ProductSearchDto;
 import com.example.project.products.dto.Responses.ProductThumnailDto;
+import com.example.project.products.entities.Category;
 import com.example.project.products.entities.Product;
 import com.example.project.products.entities.ProductCategory;
 import com.example.project.products.exceptions.ProductNotFoundException;
@@ -61,8 +62,15 @@ public class ProductServiceStoreImplTest {
         productInDB.setIsFeatured(false);
         productInDB.setThumbnailUrl("thumbnail");
         productInDB.getAvgRating().setAvgRating(0.0);
-        productInDB.setCategories(new ArrayList<>());
-        productInDB.setImages(new ArrayList<>());
+        var category = new Category();
+        category.setId(Long.valueOf(1));
+        category.setName("category");
+        var productCategory = new ProductCategory(Long.valueOf(1), productInDB, category);
+        productInDB.setCategories(List.of(productCategory));
+        var image = new Image();
+        image.setProduct(productInDB);
+        image.setUrl("image");
+        productInDB.setImages(List.of(image));
         returnPage = new PageImpl<>(List.of(productInDB));
 
         lenient().when(mockProductRepository.findById(Long.valueOf(20))).thenReturn(Optional.of(productInDB));
@@ -82,7 +90,9 @@ public class ProductServiceStoreImplTest {
                 productInDB.getName()).hasFieldOrPropertyWithValue("desc", productInDB.getDesc())
                 .hasFieldOrPropertyWithValue("salePrice", productInDB.getSalePrice())
                 .hasFieldOrPropertyWithValue("thumbnailUrl", productInDB.getThumbnailUrl())
-                .hasFieldOrPropertyWithValue("averageScore", 0.0);
+                .hasFieldOrPropertyWithValue("averageScore", 0.0)
+                .hasFieldOrPropertyWithValue("categories", List.of("category"))
+                .hasFieldOrPropertyWithValue("imagesUrl", List.of("image"));
     }
 
     @Test

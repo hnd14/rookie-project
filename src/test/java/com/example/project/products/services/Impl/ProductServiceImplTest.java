@@ -17,8 +17,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.project.products.dto.Requests.ProductSearchDto;
+import com.example.project.products.entities.Category;
 import com.example.project.products.entities.Product;
 import com.example.project.products.exceptions.ProductNotFoundException;
+import com.example.project.products.repositories.CategoryRepository;
 import com.example.project.products.repositories.ProductRepository;
 
 @SpringBootTest
@@ -30,7 +32,10 @@ public class ProductServiceImplTest {
     private ProductRepository repository;
     @Autowired
     private ProductServiceImpl service;
+    @Autowired
+    private CategoryRepository categoryRepository;
     private Product productInDB;
+    private Category categoryInDB;
     private final ProductSearchDto defaultSerch = new ProductSearchDto(Optional.of(""),
             Optional.empty(),
             Optional.empty(),
@@ -53,6 +58,9 @@ public class ProductServiceImplTest {
         productInDB.setSalePrice(5000.0);
         productInDB.setIsFeatured(false);
         repository.save(productInDB);
+        categoryInDB = categoryRepository.findById(Long.valueOf(0)).orElse(new Category());
+        categoryInDB.setName("category");
+        categoryRepository.save(categoryInDB);
     }
 
     @AfterEach
@@ -75,7 +83,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAllCategories_whenGivenPageIndex0_shouldThrow() {
+    void testFindProductWithFilter_whenGivenPageIndex0_shouldThrow() {
         // set up
         var dto = new ProductSearchDto(Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(0),
@@ -87,7 +95,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAllCategories_whenGivenPageIndexNegative_shouldThrow() {
+    void testFindProductWithFilter_whenGivenPageIndexNegative_shouldThrow() {
         // set up
         var dto = new ProductSearchDto(Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(-1),
@@ -99,7 +107,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAllCategories_whenGivenPageSize0_shouldThrow() {
+    void testFindProductWithFilter_whenGivenPageSize0_shouldThrow() {
         // set up
         var dto = new ProductSearchDto(Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(0), Optional.empty(),
@@ -111,7 +119,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAllCategories_whenGivenFilterName_shouldFindOnlyProductsWhoseNameContainsSearchString() {
+    void testFindProductWithFilter_whenGivenFilterName_shouldFindOnlyProductsWhoseNameContainsSearchString() {
         // set up
         var searchSequence = "pro";
         var dto = new ProductSearchDto(Optional.of(searchSequence), Optional.empty(), Optional.empty(),
@@ -127,7 +135,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAllCategories_whenGivenFilterFeatured_shouldFindOnlyFeaturedProducts() {
+    void testFindProductWithFilter_whenGivenFilterFeatured_shouldFindOnlyFeaturedProducts() {
         // set up
         var dto = new ProductSearchDto(Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
@@ -142,7 +150,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAllCategories_whenGivenFilterPrice_shouldFindOnlyProductsWhosePriceInRange() {
+    void testFindProductWithFilter_whenGivenFilterPrice_shouldFindOnlyProductsWhosePriceInRange() {
         // set up
         var minPrice = 500.0;
         var maxPrice = 5000.0;
@@ -159,7 +167,24 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAllCategories_whenGivenPageSizeNegative_shouldThrow() {
+    void testFindProductWithFilter_whenGivenCategoryId_shouldFindOnlyWithCategoryId() {
+        // set up
+        var categoryId = categoryInDB.getId();
+        var dto = new ProductSearchDto(Optional.empty(), Optional.of(categoryId), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
+        // run
+        var result = service.findProductWithFilter(dto);
+        // assert
+        assertThat(result.getContent()).allMatch((product) -> {
+            return product.getCategories().stream().anyMatch((category) -> {
+                return category.getCategory().getId().equals(categoryId);
+            });
+        });
+    }
+
+    @Test
+    void testFindProductWithFilter_whenGivenPageSizeNegative_shouldThrow() {
         // set up
         var dto = new ProductSearchDto(Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(-1), Optional.empty(),
