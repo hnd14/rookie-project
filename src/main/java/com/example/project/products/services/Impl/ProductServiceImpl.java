@@ -56,8 +56,7 @@ public class ProductServiceImpl implements ProductService {
             }
             return (root, query, cb) -> {
                 var productCategory = root.join("categories", JoinType.INNER);
-                return categoryId == null ? cb.conjunction()
-                        : cb.equal(productCategory.get("category").get("id"), categoryId.get());
+                return cb.equal(productCategory.get("category").get("id"), categoryId.get());
             };
         }
 
