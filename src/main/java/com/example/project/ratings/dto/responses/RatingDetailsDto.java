@@ -1,5 +1,8 @@
 package com.example.project.ratings.dto.responses;
 
-public record RatingDetailsDto(String id, String username, String productId, Integer scores, String comment) {
+import java.time.LocalDateTime;
+
+public record RatingDetailsDto(String id, String username, String productId, Integer scores, String comment,
+        LocalDateTime updatedTime) {
 
 }

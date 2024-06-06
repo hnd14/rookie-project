@@ -87,7 +87,7 @@ public class RatingServiceImpl implements RatingService {
                 content.getContent().stream()
                         .map(rating -> new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(),
                                 productId.toString(),
-                                rating.getScores(), rating.getComment()))
+                                rating.getScores(), rating.getComment(), rating.getUpdatedTime()))
                         .collect(Collectors.toList()),
                 content.getTotalPages(),
                 content.getNumber());
@@ -117,7 +117,7 @@ public class RatingServiceImpl implements RatingService {
         product.getAvgRating().setAvgRating(ratingRepository.findAverageRatingForProduct(Long.valueOf(productId)));
         productRepository.save(product);
         return new RatingDetailsDto(rating.getId(), rating.getUser().getUsername(), productId, rating.getScores(),
-                rating.getComment());
+                rating.getComment(), rating.getUpdatedTime());
     }
 
     @Override
@@ -145,7 +145,8 @@ public class RatingServiceImpl implements RatingService {
         var username = authentication.getPrincipal().toString();
         var ratingId = productId + "_" + username;
         Rating myRating = ratingRepository.findById(ratingId).orElse(new Rating(ratingId, 0, "", null, null));
-        return new RatingDetailsDto(ratingId, username, productId, myRating.getScores(), myRating.getComment());
+        return new RatingDetailsDto(ratingId, username, productId, myRating.getScores(), myRating.getComment(),
+                myRating.getUpdatedTime());
     }
 
 }
