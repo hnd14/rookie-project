@@ -1,5 +1,10 @@
 package com.example.project.util.exceptions;
 
-public class DuplicatedResourceException extends RuntimeException {
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+public class DuplicatedResourceException extends RuntimeException {
+    public DuplicatedResourceException(String message) {
+        super(message);
+    }
 }

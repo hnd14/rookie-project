@@ -37,6 +37,7 @@ import com.example.project.users.repositories.UserRepository;
 import com.example.project.users.services.UserService;
 import com.example.project.util.dto.requests.PagingDto;
 import com.example.project.util.dto.response.PagedDto;
+import com.example.project.util.exceptions.DuplicatedResourceException;
 import com.example.project.util.exceptions.NotFoundException;
 
 import jakarta.validation.ValidationException;
@@ -61,6 +62,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserReturnDto createNewAdminUser(CreateNewAdminDto dto) {
+        if (repository.findOneByUsername(dto.username()).isPresent()) {
+            throw new DuplicatedResourceException("This username has already been used!");
+        }
         User newAdmin = new User();
         newAdmin.setUsername(dto.username());
         newAdmin.setPassword(passwordEncoder.encode(dto.password()));
