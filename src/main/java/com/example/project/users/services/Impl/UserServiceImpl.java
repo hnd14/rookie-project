@@ -101,8 +101,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserReturnDto updateUserInfo(String username, UpdateUserInfoDto dto) {
         User userToUpdate = repository.findOneByUsername(username).orElseThrow(NotFoundException::new);
-        userToUpdate.setPassword(passwordEncoder.encode(dto.rawPassword()));
-        userToUpdate.setUserInfos(dto.details());
+        userToUpdate.setUserInfos(dto.details() == null ? userToUpdate.getUserInfos() : dto.details());
         repository.save(userToUpdate);
         return new UserReturnDto(userToUpdate.getUsername(), userToUpdate.getEmail());
     }
@@ -174,7 +173,7 @@ public class UserServiceImpl implements UserService {
         if (authentication == null
                 || !authentication.isAuthenticated()
                 || authentication instanceof AnonymousAuthenticationToken) {
-            return new UserDetailsDto(null, null, null);
+            return new UserDetailsDto(null, null, null, null, null);
         }
         var username = authentication.getName();
         var user = repository.findOneByUsername(username).orElse(new User());
