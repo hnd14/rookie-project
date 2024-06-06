@@ -6,6 +6,7 @@ import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
+import com.example.project.users.dto.requests.UpdateUserPasswordDto;
 import com.example.project.users.dto.responses.LoginResponseDto;
 import com.example.project.users.dto.responses.UserAdminDto;
 import com.example.project.users.dto.responses.UserDetailsDto;
@@ -32,5 +33,7 @@ public interface UserService extends UserDetailsService {
     LoginResponseDto verify();
 
     PagedDto<UserAdminDto> getUsersLists(PagingDto dto);
+
+    UserReturnDto updatePassword(String username, UpdateUserPasswordDto dto);
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
+import com.example.project.users.dto.requests.UpdateUserPasswordDto;
 import com.example.project.users.dto.responses.LoginResponseDto;
 import com.example.project.users.dto.responses.UserDetailsDto;
 import com.example.project.users.dto.responses.UserReturnDto;
@@ -59,10 +60,20 @@ public class AuthController extends V1Rest {
     @PutMapping("/me")
     public UserReturnDto updateUserInfo(@RequestBody UpdateUserInfoDto dto) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.isAuthenticated()) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             throw new SecurityException("You need to log in to use this function.");
         }
         var username = authentication.getPrincipal().toString();
         return userService.updateUserInfo(username, dto);
+    }
+
+    @PutMapping("/me/password")
+    public UserReturnDto updateUserPassword(@RequestBody UpdateUserPasswordDto dto) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new SecurityException("You need to log in to use this function.");
+        }
+        var username = authentication.getPrincipal().toString();
+        return userService.updatePassword(username, dto);
     }
 }

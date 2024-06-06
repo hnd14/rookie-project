@@ -25,6 +25,7 @@ import com.example.project.users.dto.requests.CreateNewAdminDto;
 import com.example.project.users.dto.requests.CustomerSignUpDto;
 import com.example.project.users.dto.requests.SignInDto;
 import com.example.project.users.dto.requests.UpdateUserInfoDto;
+import com.example.project.users.dto.requests.UpdateUserPasswordDto;
 import com.example.project.users.dto.responses.LoginResponseDto;
 import com.example.project.users.dto.responses.UserAdminDto;
 import com.example.project.users.dto.responses.UserDetailsDto;
@@ -177,7 +178,20 @@ public class UserServiceImpl implements UserService {
         }
         var username = authentication.getName();
         var user = repository.findOneByUsername(username).orElse(new User());
-        return new UserDetailsDto(user.getUsername(), user.getEmail(), user.getUserInfos());
+        return new UserDetailsDto(user.getUsername(), user.getEmail(), user.getUserInfos(), user.getCreatedTime(),
+                user.getUpdatedTime());
+    }
+
+    @Override
+    @Transactional
+    public UserReturnDto updatePassword(String username, UpdateUserPasswordDto dto) {
+        User userToUpdate = repository.findOneByUsername(username).orElseThrow(NotFoundException::new);
+        if (!passwordEncoder.matches(dto.oldPassword(), userToUpdate.getPassword())) {
+            throw new SecurityException("Your pass word does not match!");
+        }
+        userToUpdate.setPassword(passwordEncoder.encode(dto.newPassword()));
+        repository.save(userToUpdate);
+        return new UserReturnDto(userToUpdate.getUsername(), userToUpdate.getEmail());
     }
 
 }
