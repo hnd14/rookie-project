@@ -40,8 +40,6 @@ import com.example.project.util.dto.response.PagedDto;
 import com.example.project.util.exceptions.DuplicatedResourceException;
 import com.example.project.util.exceptions.NotFoundException;
 
-import jakarta.validation.ValidationException;
-
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
@@ -79,10 +77,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserReturnDto signUp(CustomerSignUpDto dto) {
         if (repository.findOneByUsername(dto.username()).isPresent()) {
-            throw new ValidationException("Username is already used");
+            throw new DuplicatedResourceException("Username is already used");
         }
         if (repository.findOneByEmail(dto.email()).isPresent()) {
-            throw new ValidationException("Email is already used");
+            throw new DuplicatedResourceException("Email is already used");
         }
         User newUser = new User();
         newUser.setUsername(dto.username());
