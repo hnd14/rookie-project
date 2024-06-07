@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,7 @@ public class ProductServiceBackStoreImpl implements ProductServiceBackStore {
     CategoryRepository categoryRepository;
     @Autowired
     CategoryMapper categoryMapper;
+    @Value("${app.image.folder}")
     private String imagePath = "C:/Users/dnhoa/Image/";
 
     @Override
